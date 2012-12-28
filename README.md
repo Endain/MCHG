@@ -6,4 +6,4 @@ An alternative Minecraft Hunger Games Plugin
 
 Developers:
 - Endain
-- Strudel
+- Strudel2010
