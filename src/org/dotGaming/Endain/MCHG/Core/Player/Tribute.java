@@ -23,4 +23,8 @@ public class Tribute {
 		this.nickname = "Notch";
 		this.damage = new HashMap<String, Integer>();
 	}
+	
+	public boolean isLocked() {
+		return locked;
+	}
 }
