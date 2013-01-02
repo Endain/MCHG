@@ -2,6 +2,7 @@ package org.dotGaming.Endain.MCHG.Core.Player;
 
 import java.util.HashMap;
 
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.dotGaming.Endain.MCHG.Core.Game;
 
@@ -23,6 +24,8 @@ public class PlayerManager {
 		int state = g.gm.getState();
 		// 0 - plugin starting up
 		// ... add more in the future
+		if(!g.isInitialized())
+			return false;
 		if(state == 0)
 			return false;
 		return true;
@@ -36,11 +39,11 @@ public class PlayerManager {
 		if(g.gm.getState() >= 0 && g.gm.getState() <= 0) {
 			// Pre-game states
 			citizens.put(p.getName(), t);
-			initializeCitizen(t);
+			t.initCitizen();
 		} else if(g.gm.getState() >= 0 && g.gm.getState() <= 0) {
 			// Mid-game states
 			spectators.put(p.getName(), t);
-			initializeSpectator(t);
+			t.initSpectator();
 		}
 	}
 	
@@ -67,15 +70,21 @@ public class PlayerManager {
 		return null;
 	}
 	
-	private void initializeCitizen(Tribute t) {
-		// TODO
-		// Set relevent parameters
-		// Teleport to lobby spawn location
+	public boolean isCitizen(Player p) {
+		if(citizens.containsKey(p.getName()))
+			return true;
+		return false;
 	}
 	
-	private void initializeSpectator(Tribute t) {
-		// TODO
-		// Set relevent parameters
-		// Teleport to current map center
+	public boolean isTribute(Player p) {
+		if(tributes.containsKey(p.getName()))
+			return true;
+		return false;
+	}
+	
+	public boolean isSpectator(Player p) {
+		if(spectators.containsKey(p.getName()))
+			return true;
+		return false;
 	}
 }

@@ -16,13 +16,19 @@ public class Game {
 	}
 	
 	public void init() {
+		// Instantiate manager and modules
 		this.gm = new GameMachine(this);
 		this.pm = new PlayerManager(this);
+		// Perform any required initialization
 		// Done initializing
 		this.initialized = true;
 	}
 	
 	public void kill() {
 		// Called when the plugin is disabled.
+	}
+	
+	public boolean isInitialized() {
+		return initialized;
 	}
 }

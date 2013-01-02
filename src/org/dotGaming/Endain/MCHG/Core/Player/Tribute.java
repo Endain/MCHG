@@ -2,6 +2,7 @@ package org.dotGaming.Endain.MCHG.Core.Player;
 
 import java.util.HashMap;
 
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
 public class Tribute {
@@ -26,5 +27,34 @@ public class Tribute {
 	
 	public boolean isLocked() {
 		return locked;
+	}
+	
+	public void initCitizen() {
+		// TODO
+		// Set relevent parameters
+		p.setGameMode(GameMode.SURVIVAL);
+		// TODO We want to give them max fullness, double check this
+		p.setHealth(20);
+		p.setSaturation(0);
+		p.setFoodLevel(20);
+		// Teleport to lobby spawn location
+	}
+	
+	public void initTribute() {
+		// TODO
+		// Set relevent parameters
+		p.setGameMode(GameMode.SURVIVAL);
+		// TODO We want to give them max fullness, double check this
+		p.setHealth(20);
+		p.setSaturation(0);
+		p.setFoodLevel(20);
+		// Teleport to lobby spawn location
+	}
+	
+	public void initSpectator() {
+		// TODO
+		// Set relevent parameters
+		p.setGameMode(GameMode.CREATIVE);
+		// Teleport to current map center
 	}
 }

@@ -28,7 +28,9 @@ public class PlayerListener implements Listener {
         	if(!g.pm.canConnect()) {
         		event.setLoginResult(Result.KICK_OTHER);
         		// Give a message based on game state.
-        		if(g.gm.getState() == 0)
+        		if(!g.isInitialized())
+        			event.setKickMessage(ChatColor.RED + "The plugin is not finished initializing!");
+        		else if(g.gm.getState() == 0)
         			event.setKickMessage(ChatColor.RED + "The server is starting, please try again soon!");
         		else
         			event.setKickMessage(ChatColor.RED + "Sorry, you cannot join the server at this time!");
