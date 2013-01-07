@@ -2,7 +2,6 @@ package org.dotGaming.Endain.MCHG.Core.Player;
 
 import java.util.HashMap;
 
-import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.dotGaming.Endain.MCHG.Core.Game;
 
