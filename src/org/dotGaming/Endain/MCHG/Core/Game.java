@@ -2,9 +2,12 @@ package org.dotGaming.Endain.MCHG.Core;
 
 import org.bukkit.plugin.Plugin;
 import org.dotGaming.Endain.MCHG.Core.Player.PlayerManager;
+import org.dotGaming.Endain.MCHG.Events.BlockListener;
+import org.dotGaming.Endain.MCHG.Events.EntityListener;
+import org.dotGaming.Endain.MCHG.Events.PlayerListener;
 
+//Acts as a high level container and a bus between subsystems.
 public class Game {
-	// Acts as a high level container and a bus between subsystems.
 	public Plugin p;
 	public GameMachine gm;
 	public PlayerManager pm;
@@ -19,7 +22,10 @@ public class Game {
 		// Instantiate manager and modules
 		this.gm = new GameMachine(this);
 		this.pm = new PlayerManager(this);
-		// Perform any required initialization
+		// Register event listeners
+		p.getServer().getPluginManager().registerEvents(new PlayerListener(this), p);
+		p.getServer().getPluginManager().registerEvents(new EntityListener(this), p);
+		p.getServer().getPluginManager().registerEvents(new BlockListener(this), p);
 		// Done initializing
 		this.initialized = true;
 	}

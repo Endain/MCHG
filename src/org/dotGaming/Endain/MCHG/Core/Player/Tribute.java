@@ -5,8 +5,8 @@ import java.util.HashMap;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
+//Encapsulates a Minecraft player and adds HG specific attributes and functions.
 public class Tribute {
-	// Encapsulates a Minecraft player and adds HG specific attributes and functions.
 	public Player p;
 	public Player lastHitBy;
 	public boolean locked;

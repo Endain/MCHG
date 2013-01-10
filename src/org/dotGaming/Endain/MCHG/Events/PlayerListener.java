@@ -13,9 +13,9 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.dotGaming.Endain.MCHG.Core.Game;
 import org.dotGaming.Endain.MCHG.Core.Player.Tribute;
 
+//Contains events relating to player actions, excluding combat.
 public class PlayerListener implements Listener {
-	// Contains events relating to player actions, excluding combat.
-	public Game g;
+	private Game g;
 	
 	public PlayerListener(Game g) {
 		this.g = g;

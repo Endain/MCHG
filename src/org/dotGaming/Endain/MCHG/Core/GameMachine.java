@@ -1,9 +1,9 @@
 package org.dotGaming.Endain.MCHG.Core;
 
+//Handles tracking and changing between game states.
 public class GameMachine {
-	// Handles tracking and changing between game states.
-	public Game g;
-	public int state;
+	private Game g;
+	private int state;
 	// State list:
 	// 0 - Initializing
 	

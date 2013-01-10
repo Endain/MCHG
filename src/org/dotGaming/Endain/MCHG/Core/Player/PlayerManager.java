@@ -5,12 +5,12 @@ import java.util.HashMap;
 import org.bukkit.entity.Player;
 import org.dotGaming.Endain.MCHG.Core.Game;
 
+//Handles players as they join/leave. Handles their state/transitions/interactions.
 public class PlayerManager {
-	// Handles players as they join/leave. Handles their state/transitions.
-	public Game g;
-	public HashMap<String, Tribute> citizens;
-	public HashMap<String, Tribute> tributes;
-	public HashMap<String, Tribute> spectators;
+	private Game g;
+	private HashMap<String, Tribute> citizens;
+	private HashMap<String, Tribute> tributes;
+	private HashMap<String, Tribute> spectators;
 	
 	public PlayerManager(Game g) {
 		this.g = g;
