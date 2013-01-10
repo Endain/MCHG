@@ -16,6 +16,7 @@ public class BlockManager {
 	private HashMap<Location, BlockState> blocks;
 	
 	public BlockManager(Game g) {
+		// Initialize block manager
 		this.g = g;
 		this.blocks = new HashMap<Location, BlockState>();
 		this.tracking = false;
