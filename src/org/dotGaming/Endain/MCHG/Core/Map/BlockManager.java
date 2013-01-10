@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.dotGaming.Endain.MCHG.Core.Game;
@@ -51,8 +50,13 @@ public class BlockManager {
 	}
 	
 	public void log(Block b) {
-		// Log a block change
-		if(!blocks.containsKey(b.getLocation()))
-			blocks.put(b.getLocation(), b.getState());
+		// Check if we should log
+		if(tracking) {
+			// Log a block change
+			if(!blocks.containsKey(b.getLocation())) {
+				blocks.put(b.getLocation(), b.getState());
+				g.p.getLogger().info("Block change logged!"); // DEBUG
+			}
+		}
 	}
 }

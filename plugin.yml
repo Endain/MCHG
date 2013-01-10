@@ -1,3 +1,13 @@
 name: MCHG
 main: org.dotGaming.Endain.MCHG.MCHG
-version: 1
+version: 0
+commands:
+   startLogging:
+      description: Start recording block changes.
+      usage: /<command>
+   stopLogging:
+      description: Stop recording block changes.
+      usage: /<command>
+   revert:
+      description: Revert all blocks that have changed.
+      usage: /<command>

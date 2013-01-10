@@ -15,4 +15,9 @@ public class GameMachine {
 	public int getState() {
 		return state;
 	}
+	
+	public void doneInitializing() {
+		if(state == 0)
+			state = 1;
+	}
 }

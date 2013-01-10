@@ -34,6 +34,6 @@ public final class MCHG extends JavaPlugin {
     	
     	// Shut down the game.
     	if(g != null)
-    		g.init();
+    		g.kill();
     }
 }

@@ -23,8 +23,6 @@ public class PlayerManager {
 		int state = g.gm.getState();
 		// 0 - plugin starting up
 		// ... add more in the future
-		if(!g.isInitialized())
-			return false;
 		if(state == 0)
 			return false;
 		return true;
