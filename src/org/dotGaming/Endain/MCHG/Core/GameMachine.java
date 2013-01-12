@@ -20,4 +20,8 @@ public class GameMachine {
 		if(state == 0)
 			state = 1;
 	}
+	
+	public void kill() {
+		// TODO
+	}
 }

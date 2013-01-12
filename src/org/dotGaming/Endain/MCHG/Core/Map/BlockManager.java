@@ -59,4 +59,9 @@ public class BlockManager {
 			}
 		}
 	}
+	
+	public void kill() {
+		// Clear the list of blocks tracked
+		blocks.clear();
+	}
 }

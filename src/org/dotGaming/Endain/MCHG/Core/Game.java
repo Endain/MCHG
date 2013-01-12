@@ -2,7 +2,9 @@ package org.dotGaming.Endain.MCHG.Core;
 
 import org.bukkit.command.CommandExecutor;
 import org.dotGaming.Endain.MCHG.MCHG;
+import org.dotGaming.Endain.MCHG.Core.Database.DatabaseManager;
 import org.dotGaming.Endain.MCHG.Core.Map.BlockManager;
+import org.dotGaming.Endain.MCHG.Core.Map.MapManager;
 import org.dotGaming.Endain.MCHG.Core.Player.PlayerManager;
 import org.dotGaming.Endain.MCHG.Events.BlockListener;
 import org.dotGaming.Endain.MCHG.Events.EntityListener;
@@ -14,6 +16,8 @@ public class Game {
 	public GameMachine gm;
 	public PlayerManager pm;
 	public BlockManager bm;
+	public MapManager mm;
+	public DatabaseManager dm;
 	
 	public Game(MCHG p) {
 		this.p = p;
@@ -24,6 +28,8 @@ public class Game {
 		this.gm = new GameMachine(this);
 		this.pm = new PlayerManager(this);
 		this.bm = new BlockManager(this);
+		this.mm = new MapManager(this);
+		this.dm = new DatabaseManager(this);
 		// Register event listeners
 		p.getServer().getPluginManager().registerEvents(new PlayerListener(this), p);
 		p.getServer().getPluginManager().registerEvents(new EntityListener(this), p);
@@ -39,5 +45,10 @@ public class Game {
 	
 	public void kill() {
 		// Called when the plugin is disabled.
+		gm.kill();
+		pm.kill();
+		bm.kill();
+		mm.kill();
+		dm.kill();
 	}
 }

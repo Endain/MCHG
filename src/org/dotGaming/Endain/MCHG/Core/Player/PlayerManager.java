@@ -2,6 +2,7 @@ package org.dotGaming.Endain.MCHG.Core.Player;
 
 import java.util.HashMap;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.dotGaming.Endain.MCHG.Core.Game;
 
@@ -83,5 +84,16 @@ public class PlayerManager {
 		if(spectators.containsKey(p.getName()))
 			return true;
 		return false;
+	}
+	
+	public void kill() {
+		// Kick all players
+		Player p[] = g.p.getServer().getOnlinePlayers();
+		for(int i = 0; i < p.length; i++)
+			p[i].kickPlayer(ChatColor.DARK_RED + "Server shutting down!");
+		// Clear all lists
+		citizens.clear();
+		tributes.clear();
+		spectators.clear();
 	}
 }

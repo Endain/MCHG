@@ -17,4 +17,8 @@ public class MapManager {
 		// TODO
 		// Load all maps
 	}
+	
+	public void kill() {
+		// TODO
+	}
 }
