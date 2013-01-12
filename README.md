@@ -10,8 +10,8 @@ This code follows roughly the design documents put together by Endain, Strudel a
     * This diagram shows how the game progresses through its states and defines what sequencees of event may happen.
 * Class Structure: https://docs.google.com/drawings/d/1hJWh31vr2wFCynBgafP-FhPyNMf32jpPu4g_jX3NPbo/edit
     * This is a **WIP** diagram that will eventually show the generalized relationship between classes, no UML here, just loose association to give a general idea.
-* Data table Design: https://docs.google.com/spreadsheet/ccc?key=0AgGQNZc_nyy0dEMyNTZCRUktV3FIYi14UkdPQi1zTWc
-    * The is a document from the previously planned Hunger Games plugin. Some of the tables are still relevant in this current plugin, some may become relevant in the future. This document will be revised or replaced as we determine what to do with the old project plans.
+* Data table Design: https://docs.google.com/spreadsheet/ccc?key=0AgGQNZc_nyy0dGVWc3phc1ZSLTNxTG1ZalMtYXYtQUE
+    * This is the current design for the MCHG database. It is currently evolving and only contains a bare minimum.
 
 This document will be updated to reflect the practical use of and technical details of the plugin upon completion of the first stable release of the plugin.
 

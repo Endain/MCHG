@@ -2,6 +2,7 @@ package org.dotGaming.Endain.MCHG.Core;
 
 import org.bukkit.command.CommandExecutor;
 import org.dotGaming.Endain.MCHG.MCHG;
+import org.dotGaming.Endain.MCHG.Core.Chests.ChestManager;
 import org.dotGaming.Endain.MCHG.Core.Database.DatabaseManager;
 import org.dotGaming.Endain.MCHG.Core.Map.BlockManager;
 import org.dotGaming.Endain.MCHG.Core.Map.MapManager;
@@ -13,23 +14,27 @@ import org.dotGaming.Endain.MCHG.Events.PlayerListener;
 //Acts as a high level container and a bus between subsystems.
 public class Game {
 	public MCHG p;
+	public DatabaseManager dm;
 	public GameMachine gm;
 	public PlayerManager pm;
 	public BlockManager bm;
 	public MapManager mm;
-	public DatabaseManager dm;
+	public ChestManager cm;
 	
 	public Game(MCHG p) {
 		this.p = p;
 	}
 	
 	public void init() {
+		// Instantiate and initialize critical managers
+		this.dm = new DatabaseManager(this);
+		this.dm.addDatabase("MCHG", "71381", "10784151", "jdbc:mysql://mysqlsanjose.fragnet.net:3306/71381_clientdb");
 		// Instantiate manager and modules
 		this.gm = new GameMachine(this);
 		this.pm = new PlayerManager(this);
 		this.bm = new BlockManager(this);
 		this.mm = new MapManager(this);
-		this.dm = new DatabaseManager(this);
+		this.cm = new ChestManager(this);
 		// Register event listeners
 		p.getServer().getPluginManager().registerEvents(new PlayerListener(this), p);
 		p.getServer().getPluginManager().registerEvents(new EntityListener(this), p);
@@ -45,10 +50,12 @@ public class Game {
 	
 	public void kill() {
 		// Called when the plugin is disabled.
+		// Kill the managers gracefully
 		gm.kill();
 		pm.kill();
 		bm.kill();
 		mm.kill();
+		// Kill the critical managers gracefully
 		dm.kill();
 	}
 }
