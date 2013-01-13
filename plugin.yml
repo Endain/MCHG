@@ -11,3 +11,6 @@ commands:
    revert:
       description: Revert all blocks that have changed.
       usage: /<command>
+   maps:
+      description: List random maps.
+      usage: /<command>

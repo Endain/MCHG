@@ -84,12 +84,14 @@ public class MapManager {
 		if(maps.size() > max) {
 			ArrayList<Map> maplist = new ArrayList<Map>();
 			// Keep adding until we reach the desired number of maps
-			while(maplist.size() <= max) {
+			while(maplist.size() < max) {
 				Map m = maps.get(rand.nextInt(maps.size()));
 				// Only add the map if it is not already on the list
 				if(!maplist.contains(m))
 					maplist.add(m);
 			}
+			// Return our random maplist
+			return maplist;
 		}
 		// If less that or equal to 'max' just return current maps
 		return maps;

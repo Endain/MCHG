@@ -101,7 +101,7 @@ public class Map {
 		return this.z;
 	}
 	
-	public double getradius() {
+	public double getRadius() {
 		return this.radius;
 	}
 }

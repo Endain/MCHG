@@ -44,6 +44,7 @@ public class Game {
 		p.getCommand("startLogging").setExecutor(cmd);
 		p.getCommand("stopLogging").setExecutor(cmd);
 		p.getCommand("revert").setExecutor(cmd);
+		p.getCommand("maps").setExecutor(cmd);
 		// Done initializing
 		gm.doneInitializing();
 	}
