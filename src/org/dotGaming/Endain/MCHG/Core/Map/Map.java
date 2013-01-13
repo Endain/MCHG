@@ -3,6 +3,7 @@ package org.dotGaming.Endain.MCHG.Core.Map;
 public class Map {
 	private String name;
 	private String author;
+	private String version;
 	private String description;
 	private String support;
 	private int id;
@@ -14,6 +15,7 @@ public class Map {
 	public Map() {
 		this.name = "DEFAULT";
 		this.author = "HEROBRINE";
+		this.version = "v0.0";
 		this.description = "NONE";
 		this.support = "NONE";
 		this.id = -1;
@@ -29,6 +31,10 @@ public class Map {
 	
 	public void setAuthor(String author) {
 		this.author = author;
+	}
+	
+	public void setVersion(String version) {
+		this.version = version;
 	}
 	
 	public void setDescription(String description) {
@@ -65,6 +71,10 @@ public class Map {
 	
 	public String getAuthor() {
 		return this.author;
+	}
+	
+	public String getVersion() {
+		return this.version;
 	}
 	
 	public String getDescription() {
