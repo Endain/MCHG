@@ -28,7 +28,7 @@ public class Game {
 	public void init() {
 		// Instantiate and initialize critical managers
 		this.dm = new DatabaseManager(this);
-		this.dm.addDatabase("MCHG", "71381", "10784151", "jdbc:mysql://mysqlsanjose.fragnet.net:3306/71381_clientdb");
+		this.dm.addDatabase("MCHG", "root", "root", "jdbc:mysql://127.1.0.0:3306/mchg");
 		// Instantiate manager and modules
 		this.gm = new GameMachine(this);
 		this.pm = new PlayerManager(this);

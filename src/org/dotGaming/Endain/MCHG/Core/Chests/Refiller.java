@@ -48,6 +48,9 @@ public class Refiller {
 					g.p.getLogger().info("TIER " + tier + ": " + Material.getMaterial(r.getInt(1)) + ", " + r.getFloat(2));
 					fill.add(new AbstractMap.SimpleEntry<Material, Float>(Material.getMaterial(r.getInt(1)), r.getFloat(2)));
 				}
+				// Close statements
+				r.close();
+				getTiers.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}

@@ -1,0 +1,2 @@
+Manifest-Version: 1.0
+Class-Path: MCHG\bonecp.jar MCHG\mysql.jar MCHG\guava.jar MCHG\slf4j.jar MCHG\slf4j-log4j.jar MCHG\log4j.jar
