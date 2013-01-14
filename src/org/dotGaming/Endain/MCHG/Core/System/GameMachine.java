@@ -1,4 +1,6 @@
-package org.dotGaming.Endain.MCHG.Core;
+package org.dotGaming.Endain.MCHG.Core.System;
+
+import org.dotGaming.Endain.MCHG.Core.Game;
 
 //Handles tracking and changing between game states.
 public class GameMachine {

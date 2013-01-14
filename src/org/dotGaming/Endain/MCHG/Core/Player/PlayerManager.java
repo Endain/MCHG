@@ -1,5 +1,6 @@
 package org.dotGaming.Endain.MCHG.Core.Player;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.bukkit.ChatColor;
@@ -95,5 +96,10 @@ public class PlayerManager {
 		citizens.clear();
 		tributes.clear();
 		spectators.clear();
+	}
+	
+	public int getNumberOfPlayers() {
+		// Return a count of all online players
+		return citizens.size() + tributes.size() + spectators.size();
 	}
 }

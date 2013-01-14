@@ -23,10 +23,8 @@ public class Tribute {
 		this.state = 0;
 		this.nickname = "Notch";
 		this.damage = new HashMap<String, Integer>();
-	}
-	
-	public boolean isLocked() {
-		return locked;
+		// Load player data from DB
+		load();
 	}
 	
 	public void initCitizen() {
@@ -56,5 +54,13 @@ public class Tribute {
 		// Set relevent parameters
 		p.setGameMode(GameMode.CREATIVE);
 		// Teleport to current map center
+	}
+	
+	public void load() {
+		// TODO
+	}
+	
+	public void save() {
+		// TODO
 	}
 }

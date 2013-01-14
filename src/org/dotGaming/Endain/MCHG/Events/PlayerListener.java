@@ -62,7 +62,7 @@ public class PlayerListener implements Listener {
     	// Ensure the player in question is in the server.
     	if(t != null) {
     		// Cancel movement if the tribute is "locked".
-    		if(t.isLocked()) {
+    		if(t.locked) {
     			to.setX(from.getX());
     			to.setY(from.getY());
     			to.setZ(from.getZ());

@@ -1,4 +1,4 @@
-package org.dotGaming.Endain.MCHG.Core;
+package org.dotGaming.Endain.MCHG.Core.Commands;
 
 import java.util.ArrayList;
 
