@@ -30,4 +30,10 @@ public class ChestManager {
 		// Load the chests for the map
 		// TODO
 	}
+	
+	public void kill() {
+		// Clear all lists
+		chests.clear();
+		tiers.clear();
+	}
 }

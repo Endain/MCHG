@@ -9,6 +9,7 @@ import org.dotGaming.Endain.MCHG.Core.Map.BlockManager;
 import org.dotGaming.Endain.MCHG.Core.Map.MapManager;
 import org.dotGaming.Endain.MCHG.Core.Player.PlayerManager;
 import org.dotGaming.Endain.MCHG.Core.System.GameMachine;
+import org.dotGaming.Endain.MCHG.Core.System.VoteManager;
 import org.dotGaming.Endain.MCHG.Events.BlockListener;
 import org.dotGaming.Endain.MCHG.Events.EntityListener;
 import org.dotGaming.Endain.MCHG.Events.PlayerListener;
@@ -22,6 +23,7 @@ public class Game {
 	public BlockManager bm;
 	public MapManager mm;
 	public ChestManager cm;
+	public VoteManager vm;
 	
 	public Game(MCHG p) {
 		this.p = p;
@@ -37,6 +39,7 @@ public class Game {
 		this.bm = new BlockManager(this);
 		this.mm = new MapManager(this);
 		this.cm = new ChestManager(this);
+		this.vm = new VoteManager(this);
 		// Register event listeners
 		p.getServer().getPluginManager().registerEvents(new PlayerListener(this), p);
 		p.getServer().getPluginManager().registerEvents(new EntityListener(this), p);
@@ -58,6 +61,8 @@ public class Game {
 		pm.kill();
 		bm.kill();
 		mm.kill();
+		cm.kill();
+		vm.kill();
 		// Kill the critical managers gracefully
 		dm.kill();
 	}

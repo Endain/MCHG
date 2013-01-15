@@ -10,6 +10,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.server.ServerListPingEvent;
 import org.dotGaming.Endain.MCHG.Core.Game;
 import org.dotGaming.Endain.MCHG.Core.Player.Tribute;
 
@@ -70,4 +71,10 @@ public class PlayerListener implements Listener {
     		}
     	}
     }
+	
+	@EventHandler
+	public void onPing(ServerListPingEvent event) {
+		// Give an MOTD based on state
+		event.setMotd(g.gm.getMOTD());
+	}
 }
