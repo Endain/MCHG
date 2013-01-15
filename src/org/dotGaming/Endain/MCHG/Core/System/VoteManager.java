@@ -159,13 +159,13 @@ public class VoteManager {
 	class Announce implements Runnable {
 		@Override
 		public void run() {
-			if(count <= 6) {
+			if(count < 6) {
 				// Find minutes and seconds left
 				int minutes = (120 - count * 20) / 60;
 				int seconds = (120 - count * 20) % 60;
 				// Announce progress update
 				g.p.getServer().broadcastMessage(ChatColor.RED + "----------------------------------------------------");
-				g.p.getServer().broadcastMessage(ChatColor.BOLD + "" + ChatColor.GRAY + minutes + " minute(s) and " + seconds + " seconds(s)" + ChatColor.RESET + "until voting closes!");
+				g.p.getServer().broadcastMessage(ChatColor.BOLD + "" + ChatColor.GRAY + minutes + " minute(s) and " + seconds + " seconds(s)" + ChatColor.RESET + " until voting closes!");
 				g.p.getServer().broadcastMessage(ChatColor.GRAY + "---------------------------------------------------");
 				for(int i = 0; i < votelist.size(); i++)
 					g.p.getServer().broadcastMessage((i + 1) + ".) " + maplist.get(i).getName() + ChatColor.GRAY + " (" + votelist.get(i) + " votes!) " + ChatColor.GOLD + "(/v " + (i + 1) + " to vote!)");
@@ -176,7 +176,8 @@ public class VoteManager {
 				// Schedule next announcement
 				task = g.p.getServer().getScheduler().scheduleSyncDelayedTask(g.p, new Announce(), 400);
 			} else {
-				
+				stopVote(true);
+				g.gm.doneVoting();
 			}
 		}
 		

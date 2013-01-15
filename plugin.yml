@@ -14,3 +14,9 @@ commands:
    maps:
       description: List random maps.
       usage: /<command>
+   v:
+      description: Vote for a map.
+      usage: /<command> [map number]
+   skip:
+      description: Vote to select a different map list.
+      usage: /<command>

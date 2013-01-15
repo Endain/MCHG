@@ -23,9 +23,16 @@ public class PlayerManager {
 	
 	public boolean canConnect() {
 		int state = g.gm.getState();
-		// 0 - plugin starting up
-		// ... add more in the future
-		if(state == 0)
+		// State list:
+		// 0 - Initializing
+		// 1 - Grace period (new players only)
+		// 2 - Voting
+		// 3 - District selection
+		// 4 - Count down
+		// 5 - Game
+		// 6 - Deathmatch
+		// 7 - Victory
+		if(state == 0 || state == 3 || state == 4)
 			return false;
 		return true;
 	}
@@ -35,11 +42,11 @@ public class PlayerManager {
 		removePlayer(p);
 		// Add player to specific list based on state
 		Tribute t = new Tribute(p);
-		if(g.gm.getState() >= 0 && g.gm.getState() <= 0) {
+		if(g.gm.getState() >= 1 && g.gm.getState() <= 2) {
 			// Pre-game states
 			citizens.put(p.getName(), t);
 			t.initCitizen();
-		} else if(g.gm.getState() >= 0 && g.gm.getState() <= 0) {
+		} else if(g.gm.getState() >= 5 && g.gm.getState() <= 6) {
 			// Mid-game states
 			spectators.put(p.getName(), t);
 			t.initSpectator();

@@ -11,6 +11,11 @@ public class GameMachine {
 	// 0 - Initializing
 	// 1 - Grace period (new players only)
 	// 2 - Voting
+	// 3 - District selection
+	// 4 - Count down
+	// 5 - Game
+	// 6 - Deathmatch
+	// 7 - Victory
 	
 	public GameMachine(Game g) {
 		this.g = g;
@@ -47,6 +52,9 @@ public class GameMachine {
 			state = 3;
 			// Change the servers list message
 			motd = "[PREGAME] Wait for game to start!";
+			// Get the winning map and kick of district selection
+			g.vm.getWinningMap(); // Should do something with this later TODO
+			// TODO
 		}
 	}
 	
