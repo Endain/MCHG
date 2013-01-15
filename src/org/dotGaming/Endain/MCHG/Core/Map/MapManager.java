@@ -80,9 +80,10 @@ public class MapManager {
 	}
 	
 	public ArrayList<Map> getRandomMaps(int max) {
-		// get random maps if more available then 'max'
+		// Make a new maplist to return
+		ArrayList<Map> maplist = new ArrayList<Map>();
+		// Get random maps if more available then 'max'
 		if(maps.size() > max) {
-			ArrayList<Map> maplist = new ArrayList<Map>();
 			// Keep adding until we reach the desired number of maps
 			while(maplist.size() < max) {
 				Map m = maps.get(rand.nextInt(maps.size()));
@@ -90,11 +91,13 @@ public class MapManager {
 				if(!maplist.contains(m))
 					maplist.add(m);
 			}
-			// Return our random maplist
-			return maplist;
+		} else {
+			// Just return all the maps in the manager otherwise
+			for(int i = 0; i < maps.size(); i++)
+				maplist.add(maps.get(i));
 		}
-		// If less that or equal to 'max' just return current maps
-		return maps;
+		// Return our random map list
+		return maplist;
 	}
 	
 	public void chooseMap(Map m) {

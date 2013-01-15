@@ -12,7 +12,7 @@ public class VoteManager {
 	private Game g;
 	private ArrayList<Map> maplist;
 	private ArrayList<Integer> votelist;
-	private ArrayList<Tribute> voters;
+	private ArrayList<String> voters;
 	private int skipvotes;
 	private int skips;
 	private int task;
@@ -23,7 +23,7 @@ public class VoteManager {
 		this.g = g;
 		this.maplist = new ArrayList<Map>();
 		this.votelist = new ArrayList<Integer>();
-		this.voters = new ArrayList<Tribute>();
+		this.voters = new ArrayList<String>();
 		this.skipvotes = 0;
 		this.skips = 0;
 		this.task = -1;
@@ -64,12 +64,13 @@ public class VoteManager {
 		// Make sure voting is open
 		if(open) {
 			// Make sure they have not yet voted
-			if(!voters.contains(t)) {
+			if(!voters.contains(t.p.getName())) {
 				// Make sure it is a valid vote
 				if(map <= votelist.size()) {
 					// Add them to the list of voters and count their vote
-					voters.add(t);
+					voters.add(t.p.getName());
 					votelist.set(map - 1, votelist.get(map - 1) + 1);
+					t.p.sendMessage(ChatColor.GREEN + "Vote recieved!");
 				} else {
 					t.p.sendMessage(ChatColor.RED + "Invalid vote! Enter a choice between 1 and " + votelist.size());
 				}
@@ -88,9 +89,10 @@ public class VoteManager {
 			// Make sure we are allowing skip votes
 			if(skips < 2) {
 				// Make sure they have not yet voted
-				if(!voters.contains(t)) {
-					voters.add(t);
+				if(!voters.contains(t.p.getName())) {
+					voters.add(t.p.getName());
 					skipvotes++;
+					t.p.sendMessage(ChatColor.GREEN + "Vote recieved!");
 				} else {
 					t.p.sendMessage(ChatColor.RED + "You have already voted and cannot change your vote!");
 				}
