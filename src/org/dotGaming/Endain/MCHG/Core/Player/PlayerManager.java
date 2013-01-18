@@ -1,6 +1,5 @@
 package org.dotGaming.Endain.MCHG.Core.Player;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.bukkit.ChatColor;
@@ -98,7 +97,7 @@ public class PlayerManager {
 		// Kick all players
 		Player p[] = g.p.getServer().getOnlinePlayers();
 		for(int i = 0; i < p.length; i++)
-			p[i].kickPlayer(ChatColor.DARK_RED + "Server shutting down!");
+			p[i].kickPlayer(ChatColor.RED + "Server shutting down!");
 		// Clear all lists
 		citizens.clear();
 		tributes.clear();

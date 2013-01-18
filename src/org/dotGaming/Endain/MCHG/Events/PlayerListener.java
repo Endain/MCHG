@@ -64,11 +64,11 @@ public class PlayerListener implements Listener {
     	if(t != null) {
     		// Cancel movement if the tribute is "locked".
     		if(t.locked) {
-    			to.setX(from.getX());
-    			to.setY(from.getY());
-    			to.setZ(from.getZ());
-    			event.setTo(to);
+    			Location look = new Location(from.getWorld(), from.getX(), from.getY(), from.getZ(), to.getYaw(), to.getPitch());
+    			event.setTo(look);
     		}
+    		// Pass onCollide event to relevant managers
+    		g.tm.onCollide(t);
     	}
     }
 	

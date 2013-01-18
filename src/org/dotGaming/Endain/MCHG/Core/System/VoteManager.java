@@ -121,13 +121,11 @@ public class VoteManager {
 		// Pick a random map from the finalists
 		Map winner = finalists.get(rand.nextInt(finalists.size()));
 		// Announce the winner
-		g.p.getServer().broadcastMessage(ChatColor.RED + "===================================================");
-		g.p.getServer().broadcastMessage(ChatColor.BOLD + "" + ChatColor.GOLD + winner.getName() + ChatColor.RESET + " has won! (" + highest + "/" + voters.size() + ")");
-		g.p.getServer().broadcastMessage(ChatColor.GRAY + "---------------------------------------------------");
+		g.p.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD + winner.getName() + ChatColor.RESET + " has won! (" + highest + "/" + voters.size() + ")");
+		g.p.getServer().broadcastMessage(ChatColor.GRAY + "===================================================");
 		g.p.getServer().broadcastMessage(ChatColor.GOLD + "Description: " + ChatColor.RESET + winner.getDescription());
 		g.p.getServer().broadcastMessage(ChatColor.GOLD + "Author: " + ChatColor.RESET + winner.getAuthor());
 		g.p.getServer().broadcastMessage(ChatColor.GOLD + "Version: " + ChatColor.RESET + winner.getVersion());
-		g.p.getServer().broadcastMessage(ChatColor.RED + "---------------------------------------------------");
 		// Return winning map
 		return winner;
 	}
@@ -142,10 +140,8 @@ public class VoteManager {
 			// Increment number of successful skips
 			skips++; 
 			// Announce a successful skip vote
-			g.p.getServer().broadcastMessage(ChatColor.RED + "---------------------------------------------------");
-			g.p.getServer().broadcastMessage(ChatColor.BOLD + "" + ChatColor.GOLD + "The skip vote has passed! " + ChatColor.RESET + "(" + skipvotes + "/" + g.pm.getNumberOfPlayers() + ")");
+			g.p.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "The skip vote has passed! " + ChatColor.RESET + "(" + skipvotes + "/" + g.pm.getNumberOfPlayers() + ")");
 			g.p.getServer().broadcastMessage("New maps will be selected in 5 seconds. " + skips + "/2 skips used.");
-			g.p.getServer().broadcastMessage(ChatColor.RED + "---------------------------------------------------");
 			// Schedule a skip task 5 seconds out
 			task = g.p.getServer().getScheduler().scheduleSyncDelayedTask(g.p, new Skip(), 100);
 		}
@@ -166,17 +162,15 @@ public class VoteManager {
 				int minutes = (120 - count * 20) / 60;
 				int seconds = (120 - count * 20) % 60;
 				// Announce progress update
-				g.p.getServer().broadcastMessage(ChatColor.RED + "----------------------------------------------------");
-				g.p.getServer().broadcastMessage(ChatColor.BOLD + "" + ChatColor.GRAY + minutes + " minute(s) and " + seconds + " seconds(s)" + ChatColor.RESET + " until voting closes!");
+				g.p.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD + minutes + " minute(s) and " + seconds + " seconds(s)" + ChatColor.RESET + " until voting closes!");
 				g.p.getServer().broadcastMessage(ChatColor.GRAY + "---------------------------------------------------");
 				for(int i = 0; i < votelist.size(); i++)
 					g.p.getServer().broadcastMessage((i + 1) + ".) " + maplist.get(i).getName() + ChatColor.GRAY + " (" + votelist.get(i) + " votes!) " + ChatColor.GOLD + "(/v " + (i + 1) + " to vote!)");
 				g.p.getServer().broadcastMessage(skipvotes + " skip votes! " + (int)((float)g.pm.getNumberOfPlayers() * .6) + " votes needed to skip!");
-				g.p.getServer().broadcastMessage(ChatColor.RED + "---------------------------------------------------");
 				// Increment count
 				count++;
 				// Schedule next announcement
-				task = g.p.getServer().getScheduler().scheduleSyncDelayedTask(g.p, new Announce(), 400);
+				task = g.p.getServer().getScheduler().scheduleSyncDelayedTask(g.p, new Announce(), 40); // TODO change back to 400
 			} else {
 				stopVote(true);
 				g.gm.doneVoting();

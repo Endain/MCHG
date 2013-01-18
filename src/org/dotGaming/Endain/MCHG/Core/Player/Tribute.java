@@ -18,7 +18,7 @@ public class Tribute {
 	public Tribute(Player p) {
 		this.p = p;
 		this.lastHitBy = null;
-		this.locked = true;
+		this.locked = false;
 		this.district = 0;
 		this.state = 0;
 		this.nickname = "Notch";
@@ -54,6 +54,16 @@ public class Tribute {
 		// Set relevent parameters
 		p.setGameMode(GameMode.CREATIVE);
 		// Teleport to current map center
+	}
+	
+	public void lock() {
+		// Lock the player
+		locked = true;
+	}
+	
+	public void unlock() {
+		// Unlock the player
+		locked = false;
 	}
 	
 	public void load() {

@@ -55,6 +55,7 @@ public class GameMachine {
 			// Get the winning map and kick of district selection
 			g.vm.getWinningMap(); // Should do something with this later TODO
 			// TODO
+			g.tm.open();
 		}
 	}
 	

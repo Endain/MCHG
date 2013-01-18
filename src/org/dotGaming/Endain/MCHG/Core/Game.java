@@ -1,5 +1,6 @@
 package org.dotGaming.Endain.MCHG.Core;
 
+import org.bukkit.World;
 import org.bukkit.command.CommandExecutor;
 import org.dotGaming.Endain.MCHG.MCHG;
 import org.dotGaming.Endain.MCHG.Core.Chests.ChestManager;
@@ -8,6 +9,7 @@ import org.dotGaming.Endain.MCHG.Core.Database.DatabaseManager;
 import org.dotGaming.Endain.MCHG.Core.Map.BlockManager;
 import org.dotGaming.Endain.MCHG.Core.Map.MapManager;
 import org.dotGaming.Endain.MCHG.Core.Player.PlayerManager;
+import org.dotGaming.Endain.MCHG.Core.System.DistrictManager;
 import org.dotGaming.Endain.MCHG.Core.System.GameMachine;
 import org.dotGaming.Endain.MCHG.Core.System.VoteManager;
 import org.dotGaming.Endain.MCHG.Events.BlockListener;
@@ -17,6 +19,7 @@ import org.dotGaming.Endain.MCHG.Events.PlayerListener;
 //Acts as a high level container and a bus between subsystems.
 public class Game {
 	public MCHG p;
+	public World w;
 	public DatabaseManager dm;
 	public GameMachine gm;
 	public PlayerManager pm;
@@ -24,12 +27,15 @@ public class Game {
 	public MapManager mm;
 	public ChestManager cm;
 	public VoteManager vm;
+	public DistrictManager tm; // t for 'team'
 	
 	public Game(MCHG p) {
 		this.p = p;
 	}
 	
 	public void init() {
+		// Get the primary world to be used
+		this.w = p.getServer().getWorlds().get(0);
 		// Instantiate and initialize critical managers
 		this.dm = new DatabaseManager(this);
 		this.dm.addDatabase("MCHG", "root", "root", "jdbc:mysql://127.1.0.0:3306/mchg");
@@ -40,6 +46,7 @@ public class Game {
 		this.mm = new MapManager(this);
 		this.cm = new ChestManager(this);
 		this.vm = new VoteManager(this);
+		this.tm = new DistrictManager(this);
 		// Register event listeners
 		p.getServer().getPluginManager().registerEvents(new PlayerListener(this), p);
 		p.getServer().getPluginManager().registerEvents(new EntityListener(this), p);
@@ -65,6 +72,7 @@ public class Game {
 		mm.kill();
 		cm.kill();
 		vm.kill();
+		tm.kill();
 		// Kill the critical managers gracefully
 		dm.kill();
 	}
