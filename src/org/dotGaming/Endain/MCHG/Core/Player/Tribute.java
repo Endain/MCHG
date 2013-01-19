@@ -18,7 +18,7 @@ public class Tribute {
 	public Tribute(Player p) {
 		this.p = p;
 		this.lastHitBy = null;
-		this.locked = false;
+		this.locked = true;
 		this.district = 0;
 		this.state = 0;
 		this.nickname = "Notch";
@@ -66,11 +66,30 @@ public class Tribute {
 		locked = false;
 	}
 	
-	public void load() {
-		// TODO
+	public Runnable load() {
+		// Lock, asynchronously fetch data, unlock when finished
+		lock();
+		return new AsyncLoad();
 	}
 	
-	public void save() {
-		// TODO
+	public Runnable save() {
+		// Spawn an async task to save data from the DB
+		return new AsyncSave();
+	}
+	
+	private class AsyncLoad implements Runnable {
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+		}
+		
+	}
+	
+	private class AsyncSave implements Runnable {
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+		}
+		
 	}
 }
