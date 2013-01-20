@@ -39,7 +39,7 @@ public class DistrictCell {
 		// Set the cell to be open
 		open = true;
 		// Replace sign and turn off light
-		light.setType(Material.REDSTONE_LAMP_OFF);
+		light.setType(Material.GLOWSTONE);
 		sign.setType(Material.SIGN_POST);
 		Sign s = (Sign) sign.getState();
 		s.setLine(2, "[District " + district + "]");
@@ -51,7 +51,7 @@ public class DistrictCell {
 		// Set the cell to be open
 		open = false;
 		// Remove sign and turn off light
-		light.setType(Material.GLOWSTONE);
+		light.setType(Material.BEACON);
 		sign.setType(Material.AIR);
 	}
 	
@@ -67,7 +67,7 @@ public class DistrictCell {
 						current = t;
 						t.p.teleport(new Location(w, x + .5, y, z + .5, t.p.getLocation().getYaw(), t.p.getLocation().getPitch()));
 						t.lock();
-						t.district = district;
+						t.setDistrict(district);
 						close();
 						// Send confirmation message
 						t.p.sendMessage(ChatColor.GREEN + "You have joined district " + district + "!");
@@ -90,5 +90,9 @@ public class DistrictCell {
 	
 	public void clearTribute() {
 		current = null;
+	}
+	
+	public int getDistrict() {
+		return district;
 	}
 }

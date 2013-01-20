@@ -28,10 +28,22 @@ public class PlayerListener implements Listener {
     	if(!g.pm.canConnect()) {
     		event.setLoginResult(Result.KICK_OTHER);
     		// Give a message based on game state.
-    		if(g.gm.getState() == 0)
+    		int state = g.gm.getState();
+    		if(state == 0)
     			event.setKickMessage(ChatColor.RED + "The server is starting, please try again soon!");
+    		else if(state == 3)
+    			event.setKickMessage(ChatColor.RED + "Sorry, you cannot join during district selection!");
+    		else if(state == 4)
+    			event.setKickMessage(ChatColor.RED + "Sorry, you cannot join during the match countdown!");
+    		else if(state == 6)
+    			event.setKickMessage(ChatColor.RED + "Sorry, you cannot join during the deathmatch!");
+    		else if(state == 7)
+    			event.setKickMessage(ChatColor.RED + "Sorry, you cannot join during the victory cooldown!");
     		else
     			event.setKickMessage(ChatColor.RED + "Sorry, you cannot join the server at this time!");
+    	} else if(g.pm.isAlumni(event.getName()) && (g.gm.getState() == 1)) {
+    		event.setLoginResult(Result.KICK_OTHER);
+    		event.setKickMessage(ChatColor.RED + "Please give new players a chance to join, you may try again in very soon!");
     	}
     }
 	

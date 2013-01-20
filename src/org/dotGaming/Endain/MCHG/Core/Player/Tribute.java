@@ -12,8 +12,8 @@ public class Tribute {
 	public Player p;
 	public Player lastHitBy;
 	public boolean locked;
-	public int district;
-	private int state;
+	private int district;
+	private boolean hasDistrict;
 	private HashMap<String, Integer> damage;
 	private PlayerData data;
 	private PlayerFatalitiesData fatalities;
@@ -23,7 +23,7 @@ public class Tribute {
 		this.lastHitBy = null;
 		this.locked = true;
 		this.district = 0;
-		this.state = 0;
+		this.hasDistrict = false;
 		this.damage = new HashMap<String, Integer>();
 		this.data = new PlayerData(p);
 		this.fatalities = new PlayerFatalitiesData(p);
@@ -32,6 +32,7 @@ public class Tribute {
 	public void initCitizen() {
 		// TODO
 		// Set relevant parameters
+		hasDistrict = false;
 		p.setGameMode(GameMode.SURVIVAL);
 		// TODO We want to give them max fullness, double check this
 		p.setHealth(20);
@@ -54,6 +55,7 @@ public class Tribute {
 	public void initSpectator() {
 		// TODO
 		// Set relevant parameters
+		hasDistrict = false;
 		p.setGameMode(GameMode.CREATIVE);
 		// Teleport to current map center
 	}
@@ -68,15 +70,29 @@ public class Tribute {
 		locked = false;
 	}
 	
-	public Runnable load(Game g) {
-		// Lock, asynchronously fetch data, unlock when finished
-		lock();
-		return new AsyncLoad(g);
+	public void setDistrict(int district) {
+		// Set the player's district
+		this.district = district;
+		hasDistrict = true;
 	}
 	
-	public Runnable save(Game g) {
+	public int getDistrict() {
+		return district;
+	}
+	
+	public boolean hasDistrict() {
+		return hasDistrict;
+	}
+	
+	public void load(Game g) {
+		// Lock, asynchronously fetch data, unlock when finished
+		lock();
+		g.p.getServer().getScheduler().runTaskAsynchronously(g.p, new AsyncLoad(g));
+	}
+	
+	public void save(Game g) {
 		// Spawn an async task to save data from the DB
-		return new AsyncSave(g);
+		g.p.getServer().getScheduler().runTaskAsynchronously(g.p, new AsyncSave(g));
 	}
 	
 	private class AsyncLoad implements Runnable {

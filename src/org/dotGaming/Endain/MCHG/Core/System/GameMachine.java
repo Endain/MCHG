@@ -51,11 +51,20 @@ public class GameMachine {
 		if(state == 2) {
 			state = 3;
 			// Change the servers list message
-			motd = "[PREGAME] Wait for game to start!";
+			motd = "[PREGAME] Players are selecting districts!";
 			// Get the winning map and kick of district selection
 			g.vm.getWinningMap(); // Should do something with this later TODO
 			// TODO
 			g.tm.open();
+		}
+	}
+	
+	public void doneDistricting() {
+		if(state == 3) {
+			state = 4;
+			// Change the servers list message
+			motd = "[PREGAME] Waiting for game to start!";
+			// TODO
 		}
 	}
 	

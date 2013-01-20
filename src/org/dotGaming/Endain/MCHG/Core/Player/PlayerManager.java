@@ -1,6 +1,8 @@
 package org.dotGaming.Endain.MCHG.Core.Player;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -12,15 +14,18 @@ public class PlayerManager {
 	private HashMap<String, Tribute> citizens;
 	private HashMap<String, Tribute> tributes;
 	private HashMap<String, Tribute> spectators;
+	private ArrayList<String> alumni;
 	
 	public PlayerManager(Game g) {
 		this.g = g;
-		citizens = new HashMap<String, Tribute>();
-		tributes = new HashMap<String, Tribute>();
-		spectators = new HashMap<String, Tribute>();
+		this.citizens = new HashMap<String, Tribute>();
+		this.tributes = new HashMap<String, Tribute>();
+		this.spectators = new HashMap<String, Tribute>();
+		this.alumni = new ArrayList<String>();
 	}
 	
 	public boolean canConnect() {
+		// Check if a player can connect
 		int state = g.gm.getState();
 		// State list:
 		// 0 - Initializing
@@ -31,7 +36,7 @@ public class PlayerManager {
 		// 5 - Game
 		// 6 - Deathmatch
 		// 7 - Victory
-		if(state == 0 || state == 3 || state == 4)
+		if(state == 0 || state == 3 || state == 4 || state == 6 || state == 7)
 			return false;
 		return true;
 	}
@@ -39,7 +44,7 @@ public class PlayerManager {
 	public void addPlayer(Player p) {
 		// First ensure that the player does not already exist
 		removePlayer(p);
-		// Add player to specific list based on state
+		// Filter player into correct list based on game state
 		Tribute t = new Tribute(p);
 		if(g.gm.getState() >= 1 && g.gm.getState() <= 2) {
 			// Pre-game states
@@ -50,6 +55,8 @@ public class PlayerManager {
 			spectators.put(p.getName(), t);
 			t.initSpectator();
 		}
+		// Load the player's data from the DB
+		t.load(g);
 	}
 	
 	public void removePlayer(Player p) {
@@ -66,6 +73,7 @@ public class PlayerManager {
 	}
 	
 	public Tribute getTribute(Player p) {
+		// Get the tribute object for a given player
 		if(citizens.containsKey(p.getName()))
 			return citizens.get(p.getName());
 		if(tributes.containsKey(p.getName()))
@@ -76,18 +84,21 @@ public class PlayerManager {
 	}
 	
 	public boolean isCitizen(Player p) {
+		// Determine if a player is a citizen
 		if(citizens.containsKey(p.getName()))
 			return true;
 		return false;
 	}
 	
 	public boolean isTribute(Player p) {
+		// Determine if a player is a tribute
 		if(tributes.containsKey(p.getName()))
 			return true;
 		return false;
 	}
 	
 	public boolean isSpectator(Player p) {
+		// Determine if a player is a spectator
 		if(spectators.containsKey(p.getName()))
 			return true;
 		return false;
@@ -107,5 +118,86 @@ public class PlayerManager {
 	public int getNumberOfPlayers() {
 		// Return a count of all online players
 		return citizens.size() + tributes.size() + spectators.size();
+	}
+	
+	public void citizensToTributes() {
+		// Move all citizens to tributes
+		Iterator<Tribute> i = citizens.values().iterator();
+		while(i.hasNext()) {
+			Tribute t = i.next();
+			tributes.put(t.p.getName(), t);
+		}
+		// Clear citizens
+		citizens.clear();
+	}
+	
+	public void tributeToSpectator(Player p) {
+		// Move a player from tribute to spectators
+		Tribute t = tributes.remove(p.getName());
+		if(t != null) {
+			spectators.put(p.getName(), t);
+			// Initialize as spectator
+			t.initSpectator();
+		}
+	}
+	
+	public void addAlumni(Player p) {
+		// Add a player to the list of alumni for hte match
+		alumni.add(p.getName());
+	}
+	
+	public void clearAlumni() {
+		// Clear the list of alumni
+		alumni.clear();
+	}
+	
+	public boolean isAlumni(String name) {
+		// Check if a name is part of the alumni
+		if(alumni.contains(name))
+			return true;
+		return false;
+	}
+	
+	public ArrayList<Tribute> getCitizensWithoutDistrict() {
+		// Get a list of all citizen without a district
+		ArrayList<Tribute> list = new ArrayList<Tribute>();
+		Iterator<Tribute> i = citizens.values().iterator();
+		// Check all citizens
+		while(i.hasNext()) {
+			Tribute t = i.next();
+			// Add them if they have no district
+			if(!t.hasDistrict())
+				list.add(t);
+		}
+		// Return the list is district-less citizens
+		return list;
+	}
+	
+	public void lockCitizens() {
+		// Lock all citizens
+		Iterator<Tribute> i = citizens.values().iterator();
+		while(i.hasNext())
+			i.next().lock();
+	}
+	
+	public void unlockCitizens() {
+		// unlock all citizens
+		Iterator<Tribute> i = citizens.values().iterator();
+		while(i.hasNext())
+			i.next().unlock();
+	}
+	
+	public void lockTributes() {
+		// Lock all citizens
+		Iterator<Tribute> i = tributes.values().iterator();
+		while(i.hasNext())
+			i.next().lock();
+	}
+	
+	public void unlockTributes() {
+		// unlock all citizens
+		Iterator<Tribute> i = tributes.values().iterator();
+		while(i.hasNext())
+			i.next().unlock();
 	}
 }

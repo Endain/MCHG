@@ -170,7 +170,7 @@ public class VoteManager {
 				// Increment count
 				count++;
 				// Schedule next announcement
-				task = g.p.getServer().getScheduler().scheduleSyncDelayedTask(g.p, new Announce(), 40); // TODO change back to 400
+				task = g.p.getServer().getScheduler().scheduleSyncDelayedTask(g.p, new Announce(), 80); // TODO change back to 400
 			} else {
 				stopVote(true);
 				g.gm.doneVoting();
