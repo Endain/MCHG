@@ -52,9 +52,9 @@ public class GameMachine {
 			state = 3;
 			// Change the servers list message
 			motd = "[PREGAME] Players are selecting districts!";
-			// Get the winning map and kick of district selection
-			g.vm.getWinningMap(); // Should do something with this later TODO
-			// TODO
+			// Set map to the winning map
+			g.mm.chooseMap(g.vm.getWinningMap()); 
+			// Open district selection
 			g.tm.open();
 		}
 	}
@@ -64,6 +64,15 @@ public class GameMachine {
 			state = 4;
 			// Change the servers list message
 			motd = "[PREGAME] Waiting for game to start!";
+			// TODO
+		}
+	}
+	
+	public void doneCountdown() {
+		if(state == 4) {
+			state = 5;
+			// Change the servers list message
+			motd = "[GAME] Server open for spectators!";
 			// TODO
 		}
 	}
