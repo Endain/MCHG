@@ -7,9 +7,10 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.dotGaming.Endain.MCHG.Core.Game;
+import org.dotGaming.Endain.MCHG.Core.Manager;
 
 // Manages changes to blocks on the server and can revert those blocks to their earliest state.
-public class BlockManager {
+public class BlockManager implements Manager{
 	private Game g;
 	private boolean tracking;
 	private HashMap<Location, BlockState> blocks;
@@ -19,6 +20,23 @@ public class BlockManager {
 		this.g = g;
 		this.blocks = new HashMap<Location, BlockState>();
 		this.tracking = false;
+	}
+	
+	@Override
+	public boolean load() {
+		// Nothing to do for now
+		return true;
+	}
+
+	@Override
+	public void reset() {
+		// Nothing to do for now
+	}
+	
+	@Override
+	public void kill() {
+		// Clear the list of blocks tracked
+		blocks.clear();
 	}
 	
 	public void start() {
@@ -58,10 +76,5 @@ public class BlockManager {
 				g.p.getLogger().info("Block change logged!"); // DEBUG
 			}
 		}
-	}
-	
-	public void kill() {
-		// Clear the list of blocks tracked
-		blocks.clear();
 	}
 }

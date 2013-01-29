@@ -5,10 +5,11 @@ import java.util.Random;
 
 import org.bukkit.ChatColor;
 import org.dotGaming.Endain.MCHG.Core.Game;
+import org.dotGaming.Endain.MCHG.Core.Manager;
 import org.dotGaming.Endain.MCHG.Core.Map.Map;
 import org.dotGaming.Endain.MCHG.Core.Player.Tribute;
 
-public class VoteManager {
+public class VoteManager implements Manager {
 	private Game g;
 	private ArrayList<Map> maplist;
 	private ArrayList<Integer> votelist;
@@ -24,11 +25,40 @@ public class VoteManager {
 		this.maplist = new ArrayList<Map>();
 		this.votelist = new ArrayList<Integer>();
 		this.voters = new ArrayList<String>();
+	}
+	
+	@Override
+	public boolean load() {
+		// Set default values
 		this.skipvotes = 0;
 		this.skips = 0;
 		this.task = -1;
 		this.count = 0;
 		this.open = false;
+		// Return success
+		return true;
+	}
+
+	@Override
+	public void reset() {
+		// Restore default values
+		this.skipvotes = 0;
+		this.skips = 0;
+		this.task = -1;
+		this.count = 0;
+		this.open = false;
+		// Clear all lists
+		maplist.clear();
+		votelist.clear();
+		voters.clear();
+	}
+	
+	@Override
+	public void kill() {
+		// Clear all lists
+		maplist.clear();
+		votelist.clear();
+		voters.clear();
 	}
 	
 	public void startVote() {
@@ -145,13 +175,6 @@ public class VoteManager {
 			// Schedule a skip task 5 seconds out
 			task = g.p.getServer().getScheduler().scheduleSyncDelayedTask(g.p, new Skip(), 100);
 		}
-	}
-	
-	public void kill() {
-		// Clear all lists
-		maplist.clear();
-		votelist.clear();
-		voters.clear();
 	}
 	
 	class Announce implements Runnable {

@@ -21,7 +21,10 @@ public final class MCHG extends JavaPlugin {
 		
 		// Instantiate the game bus/container and initialize it.
 		g = new Game(this);
-		g.init();
+		if(!g.init()) {
+			getLogger().info("MCHG has failed to initialize and will shutdown!");
+			this.getPluginLoader().disablePlugin(this);
+		}
 		
 		// Remove the pre-init listener to allow for logins
 		AsyncPlayerPreLoginEvent.getHandlerList().unregister(preInit);

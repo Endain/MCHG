@@ -9,10 +9,11 @@ import java.util.Iterator;
 
 import org.bukkit.ChatColor;
 import org.dotGaming.Endain.MCHG.Core.Game;
+import org.dotGaming.Endain.MCHG.Core.Manager;
 import org.dotGaming.Endain.MCHG.Core.Player.Tribute;
 import org.dotGaming.Endain.MCHG.Core.System.VoteManager.Announce;
 
-public class DistrictManager {
+public class DistrictManager implements Manager{
 	private Game g;
 	private ArrayList<DistrictCell> cells;
 	private boolean open;
@@ -22,13 +23,12 @@ public class DistrictManager {
 	public DistrictManager(Game g) {
 		this.g = g;
 		this.cells = new ArrayList<DistrictCell>();
-		// Load the cells from the DB
-		load();
-		// close the cells by default
-		close();
 	}
 	
-	private void load() {
+	@Override
+	public boolean load() {
+		// Track if successful
+		boolean success = false;
 		// Load all district cells from the database
 		// Get a database connection to load data from
 		Connection c = g.dm.getDB("MCHG");
@@ -48,6 +48,8 @@ public class DistrictManager {
 				// Close statements
 				r.close();
 				getCells.close();
+				// Loading was successful
+				success = true;
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -58,6 +60,22 @@ public class DistrictManager {
 				e.printStackTrace();
 			}
 		}
+		// close the cells by default
+		close();
+		// Return success state
+		return success;
+	}
+	
+	@Override
+	public void reset() {
+		// Close the cells by default
+		close();
+	}
+	
+	@Override
+	public void kill() {
+		// Clear the list of cells
+		cells.clear();
 	}
 	
 	private void assignLeftovers() {
@@ -129,10 +147,6 @@ public class DistrictManager {
 				break;
 			}
 		}
-	}
-	
-	public void kill() {
-		// TODO
 	}
 	
 	class Announce implements Runnable {

@@ -8,8 +8,9 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import org.dotGaming.Endain.MCHG.Core.Game;
+import org.dotGaming.Endain.MCHG.Core.Manager;
 
-public class MapManager {
+public class MapManager implements Manager{
 	private Game g;
 	private ArrayList<Map> maps;
 	private Map current;
@@ -20,11 +21,12 @@ public class MapManager {
 		this.maps = new ArrayList<Map>();
 		this.current = null;
 		this.rand = new Random();
-		// Load all maps form the database
-		load();
 	}
 	
-	private void load() {
+	@Override
+	public boolean load() {
+		// Track if successful
+		boolean success = false;
 		// Load map data from the database based on tier
 		// Get a database connection to load data from
 		Connection c = g.dm.getDB("MCHG");
@@ -56,6 +58,8 @@ public class MapManager {
 				// Close statements
 				r.close();
 				getMaps.close();
+				// Loading was successful
+				success = true;
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -66,8 +70,16 @@ public class MapManager {
 				e.printStackTrace();
 			}
 		}
+		// Return success state
+		return success;
+	}
+
+	@Override
+	public void reset() {
+		// Nothing to do for now
 	}
 	
+	@Override
 	public void kill() {
 		// Clear out all the maps
 		maps.clear();

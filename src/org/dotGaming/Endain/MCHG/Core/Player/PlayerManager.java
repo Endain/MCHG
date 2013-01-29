@@ -7,9 +7,10 @@ import java.util.Iterator;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.dotGaming.Endain.MCHG.Core.Game;
+import org.dotGaming.Endain.MCHG.Core.Manager;
 
 //Handles players as they join/leave. Handles their state/transitions/interactions.
-public class PlayerManager {
+public class PlayerManager implements Manager{
 	private Game g;
 	private HashMap<String, Tribute> citizens;
 	private HashMap<String, Tribute> tributes;
@@ -22,6 +23,29 @@ public class PlayerManager {
 		this.tributes = new HashMap<String, Tribute>();
 		this.spectators = new HashMap<String, Tribute>();
 		this.alumni = new ArrayList<String>();
+	}
+	
+	@Override
+	public boolean load() {
+		// Nothing to do for now
+		return true;
+	}
+
+	@Override
+	public void reset() {
+		// Nothing to do for now
+	}
+	
+	@Override
+	public void kill() {
+		// Kick all players
+		Player p[] = g.p.getServer().getOnlinePlayers();
+		for(int i = 0; i < p.length; i++)
+			p[i].kickPlayer(ChatColor.RED + "Server shutting down!");
+		// Clear all lists
+		citizens.clear();
+		tributes.clear();
+		spectators.clear();
 	}
 	
 	public boolean canConnect() {
@@ -102,17 +126,6 @@ public class PlayerManager {
 		if(spectators.containsKey(p.getName()))
 			return true;
 		return false;
-	}
-	
-	public void kill() {
-		// Kick all players
-		Player p[] = g.p.getServer().getOnlinePlayers();
-		for(int i = 0; i < p.length; i++)
-			p[i].kickPlayer(ChatColor.RED + "Server shutting down!");
-		// Clear all lists
-		citizens.clear();
-		tributes.clear();
-		spectators.clear();
 	}
 	
 	public int getNumberOfPlayers() {

@@ -11,8 +11,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.dotGaming.Endain.MCHG.Core.Game;
+import org.dotGaming.Endain.MCHG.Core.Manager;
 
-public class ChestManager {
+public class ChestManager implements Manager{
 	private Game g;
 	private ArrayList<RefillingChest> chests;
 	private ArrayList<Refiller> tiers;
@@ -23,8 +24,25 @@ public class ChestManager {
 		this.chests = new ArrayList<RefillingChest>();
 		this.tiers = new ArrayList<Refiller>();
 		this.chestsLoaded = false;
+	}
+	
+	@Override
+	public boolean load() {
 		// Load the tiers
 		loadTiers();
+		return true;
+	}
+
+	@Override
+	public void reset() {
+		// Nothing to do for now
+	}
+	
+	@Override
+	public void kill() {
+		// Clear all lists
+		chests.clear();
+		tiers.clear();
 	}
 	
 	private void loadTiers() {
@@ -41,12 +59,6 @@ public class ChestManager {
 		chestsLoaded = false;
 		// Load data asynchronously
 		g.p.getServer().getScheduler().runTaskAsynchronously(g.p, new AsyncLoad(g));
-	}
-	
-	public void kill() {
-		// Clear all lists
-		chests.clear();
-		tiers.clear();
 	}
 	
 	private class AsyncLoad implements Runnable {

@@ -33,12 +33,16 @@ public class Game {
 		this.p = p;
 	}
 	
-	public void init() {
+	public boolean init() {
 		// Get the primary world to be used
 		this.w = p.getServer().getWorlds().get(0);
+		
 		// Instantiate and initialize critical managers
 		this.dm = new DatabaseManager(this);
+		if(!this.dm.load())
+			return false;
 		this.dm.addDatabase("MCHG", "root", "root", "jdbc:mysql://127.1.0.0:3306/mchg");
+		
 		// Instantiate manager and modules
 		this.gm = new GameMachine(this);
 		this.pm = new PlayerManager(this);
@@ -47,10 +51,18 @@ public class Game {
 		this.cm = new ChestManager(this);
 		this.vm = new VoteManager(this);
 		this.tm = new DistrictManager(this);
+		
+		// Load modules, notify if failure occurs
+		if(!(this.pm.load() && this.bm.load() && this.mm.load() && this.cm.load() && this.vm.load() && this.tm.load())) {
+			p.getServer().getLogger().info("A Module has failed to initialize!");
+			return false;
+		}
+		
 		// Register event listeners
 		p.getServer().getPluginManager().registerEvents(new PlayerListener(this), p);
 		p.getServer().getPluginManager().registerEvents(new EntityListener(this), p);
 		p.getServer().getPluginManager().registerEvents(new BlockListener(this), p);
+		
 		// Register command executor
 		CommandExecutor cmd = new CommandManager(this);
 		p.getCommand("startLogging").setExecutor(cmd);
@@ -59,8 +71,11 @@ public class Game {
 		p.getCommand("maps").setExecutor(cmd);
 		p.getCommand("v").setExecutor(cmd);
 		p.getCommand("skip").setExecutor(cmd);
-		// Done initializing
+		
+		// Done initializing, kick off game machine
 		gm.doneInitializing();
+		// Successful, return true
+		return true;
 	}
 	
 	public void kill() {

@@ -6,17 +6,38 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import org.dotGaming.Endain.MCHG.Core.Game;
+import org.dotGaming.Endain.MCHG.Core.Manager;
 
 import com.jolbox.bonecp.BoneCP;
 import com.jolbox.bonecp.BoneCPConfig;
 
-public class DatabaseManager {
+public class DatabaseManager implements Manager{
 	private Game g;
 	private HashMap<String, BoneCP> pools;
 	
 	public DatabaseManager(Game g) {
 		this.g = g;
 		this.pools = new HashMap<String, BoneCP>();
+	}
+	
+	@Override
+	public boolean load() {
+		// Nothing to do for now
+		return true;
+	}
+
+	@Override
+	public void reset() {
+		// Nothing to do for now
+	}
+	
+	@Override
+	public void kill() {
+		// Close all connections
+		Iterator<BoneCP> i = pools.values().iterator();
+		while(i.hasNext()) {
+			i.next().close();
+		}
 	}
 	
 	public void addDatabase(String id, String user, String pass, String addr) {
@@ -52,13 +73,5 @@ public class DatabaseManager {
 		}
 		// Otherwise return null
 		return null;
-	}
-	
-	public void kill() {
-		// Close all connections
-		Iterator<BoneCP> i = pools.values().iterator();
-		while(i.hasNext()) {
-			i.next().close();
-		}
 	}
 }
