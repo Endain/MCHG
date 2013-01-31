@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Random;
 
@@ -45,7 +46,7 @@ public class Refiller {
 				ResultSet r = getTiers.executeQuery();
 				// Extract the results
 				while(r.next()) {
-					// g.p.getLogger().info("TIER " + tier + ": " + Material.getMaterial(r.getInt(1)) + ", " + r.getFloat(2));
+					//g.p.getLogger().info("TIER " + tier + ": " + Material.getMaterial(r.getInt(1)) + ", " + r.getFloat(2));
 					fill.add(new AbstractMap.SimpleEntry<Material, Float>(Material.getMaterial(r.getInt(1)), r.getFloat(2)));
 				}
 				// Close statements
@@ -77,11 +78,6 @@ public class Refiller {
 				c.getInventory().setItem(i, new ItemStack(fill.get(x).getKey(), 1));
 			}
 		}
-		// If nothing got added, add something
-		if(c.getInventory().getContents().length == 0) {
-			// Give it an apple in a random slot
-			c.getInventory().setItem(rand.nextInt(c.getInventory().getSize()), new ItemStack(Material.APPLE, 1));
-		}
 		// If there are any diamond or iron remove all sticks or vice-versa
 		// Stick takes precedence if lower tier chests, diamond/iron if upper tier
 		if(tier >= 1) {
@@ -93,6 +89,20 @@ public class Refiller {
 				c.getInventory().remove(Material.IRON_INGOT);
 				c.getInventory().remove(Material.DIAMOND);
 			}
+		}
+		// If nothing got added, add something
+		boolean empty = true;
+		Iterator<ItemStack> iter = c.getInventory().iterator();
+		while(iter.hasNext()) {
+			if(iter.next() != null) {
+				empty = false;
+				break;
+			}
+		}
+		g.p.getLogger().info("IS EMPTY: " + empty);
+		if(empty) {
+			// Give it an apple in a random slot
+			c.getInventory().setItem(rand.nextInt(c.getInventory().getSize()), new ItemStack(Material.APPLE, 1));
 		}
 	}
 }

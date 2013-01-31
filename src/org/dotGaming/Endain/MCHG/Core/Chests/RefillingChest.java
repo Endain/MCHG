@@ -13,7 +13,7 @@ public class RefillingChest {
 		this.filler = filler;
 		Block b = loc.getBlock();
 		if(b.getType() == Material.CHEST)
-			this.chest = (Chest)b;
+			this.chest = (Chest)b.getState();
 		else
 			this.chest = null;
 	}

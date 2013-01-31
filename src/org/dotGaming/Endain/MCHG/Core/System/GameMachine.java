@@ -86,7 +86,7 @@ public class GameMachine {
 		// Set to crashed state
 		state = -1;
 		// Change the servers list message
-		motd = "[ERROR] Server crashed! Notify admin(s)!";
+		motd = "[ERROR] Please notify admin(s)!";
 	}
 	
 	public String getMOTD() {

@@ -52,6 +52,12 @@ public class ChestManager implements Manager{
 	    }
 	}
 	
+	public void refill() {
+		// Refill all the chests
+		for(int i = 0; i < chests.size(); i++)
+			chests.get(i).refill();
+	}
+	
 	public void loadMap() {
 		// Clear out any old chests
 		chests.clear();

@@ -42,7 +42,7 @@ public class DistrictManager implements Manager{
 				ResultSet r = getCells.executeQuery();
 				// Extract the results
 				while(r.next()) {
-					g.p.getLogger().info("CELL: x" + r.getInt(1) + " y" + r.getInt(2) + " z" + r.getFloat(3) + " d" + r.getInt(4));
+					//g.p.getLogger().info("CELL: x" + r.getInt(1) + " y" + r.getInt(2) + " z" + r.getFloat(3) + " d" + r.getInt(4));
 					cells.add(new DistrictCell(g.w, r.getInt(1), r.getInt(2), r.getInt(3), r.getInt(4)));
 				}
 				// Close statements
