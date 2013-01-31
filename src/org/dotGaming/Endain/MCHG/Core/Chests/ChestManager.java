@@ -58,16 +58,15 @@ public class ChestManager implements Manager{
 		// Load the chests for the map
 		chestsLoaded = false;
 		// Load data asynchronously
-		g.p.getServer().getScheduler().runTaskAsynchronously(g.p, new AsyncLoad(g));
+		g.p.getServer().getScheduler().runTaskAsynchronously(g.p, new AsyncLoad());
+	}
+	
+	public boolean isLoaded() {
+		// Return if there is a set of chests loaded
+		return chestsLoaded;
 	}
 	
 	private class AsyncLoad implements Runnable {
-		private Game g;
-		
-		public AsyncLoad(Game g) {
-			this.g = g;
-		}
-		
 		@Override
 		public void run() {
 			// Load refill data from the database based on tier

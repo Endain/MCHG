@@ -80,7 +80,7 @@ public class PlayerListener implements Listener {
     			event.setTo(look);
     		}
     		// Pass onCollide event to relevant managers
-    		g.tm.onCollide(t);
+    		g.dim.onCollide(t);
     	}
     }
 	

@@ -8,7 +8,9 @@ import org.dotGaming.Endain.MCHG.Core.Commands.CommandManager;
 import org.dotGaming.Endain.MCHG.Core.Database.DatabaseManager;
 import org.dotGaming.Endain.MCHG.Core.Map.BlockManager;
 import org.dotGaming.Endain.MCHG.Core.Map.MapManager;
+import org.dotGaming.Endain.MCHG.Core.Map.SpawnManager;
 import org.dotGaming.Endain.MCHG.Core.Player.PlayerManager;
+import org.dotGaming.Endain.MCHG.Core.System.CountdownManager;
 import org.dotGaming.Endain.MCHG.Core.System.DistrictManager;
 import org.dotGaming.Endain.MCHG.Core.System.GameMachine;
 import org.dotGaming.Endain.MCHG.Core.System.VoteManager;
@@ -26,8 +28,10 @@ public class Game {
 	public BlockManager bm;
 	public MapManager mm;
 	public ChestManager cm;
+	public SpawnManager sm;
 	public VoteManager vm;
-	public DistrictManager tm; // t for 'team'
+	public DistrictManager dim;
+	public CountdownManager cdm;
 	
 	public Game(MCHG p) {
 		this.p = p;
@@ -49,11 +53,14 @@ public class Game {
 		this.bm = new BlockManager(this);
 		this.mm = new MapManager(this);
 		this.cm = new ChestManager(this);
+		this.sm = new SpawnManager(this);
 		this.vm = new VoteManager(this);
-		this.tm = new DistrictManager(this);
+		this.dim = new DistrictManager(this);
+		this.cdm = new CountdownManager(this);
 		
 		// Load modules, notify if failure occurs
-		if(!(this.pm.load() && this.bm.load() && this.mm.load() && this.cm.load() && this.vm.load() && this.tm.load())) {
+		if(!(this.pm.load() && this.bm.load() && this.mm.load() && this.cm.load() &&
+			 this.sm.load() && this.vm.load() && this.dim.load() && this.cdm.load())) {
 			p.getServer().getLogger().info("A Module has failed to initialize!");
 			return false;
 		}
@@ -86,8 +93,10 @@ public class Game {
 		bm.kill();
 		mm.kill();
 		cm.kill();
+		sm.kill();
 		vm.kill();
-		tm.kill();
+		dim.kill();
+		cdm.kill();
 		// Kill the critical managers gracefully
 		dm.kill();
 	}

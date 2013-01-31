@@ -213,4 +213,9 @@ public class PlayerManager implements Manager{
 		while(i.hasNext())
 			i.next().unlock();
 	}
+	
+	public Iterator<Tribute> getTributeIterator() {
+		// Return an iterator over the elements of tributes
+		return tributes.values().iterator();
+	}
 }

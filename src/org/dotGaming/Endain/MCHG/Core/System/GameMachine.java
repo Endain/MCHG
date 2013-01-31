@@ -8,14 +8,15 @@ public class GameMachine {
 	private int state;
 	private String motd;
 	// State list:
-	// 0 - Initializing
-	// 1 - Grace period (new players only)
-	// 2 - Voting
-	// 3 - District selection
-	// 4 - Count down
-	// 5 - Game
-	// 6 - Deathmatch
-	// 7 - Victory
+	// -1 - Crashed/Error state 
+	// 0  - Initializing
+	// 1  - Grace period (new players only)
+	// 2  - Voting
+	// 3  - District selection
+	// 4  - Count down
+	// 5  - Game
+	// 6  - Deathmatch
+	// 7  - Victory
 	
 	public GameMachine(Game g) {
 		this.g = g;
@@ -53,9 +54,12 @@ public class GameMachine {
 			// Change the servers list message
 			motd = "[PREGAME] Players are selecting districts!";
 			// Set map to the winning map
-			g.mm.chooseMap(g.vm.getWinningMap()); 
+			g.mm.chooseMap(g.vm.getWinningMap());
+			// Load chests and spawns for the selected map
+			g.cm.loadMap();
+			g.sm.loadMap();
 			// Open district selection
-			g.tm.open();
+			g.dim.open();
 		}
 	}
 	
@@ -64,7 +68,8 @@ public class GameMachine {
 			state = 4;
 			// Change the servers list message
 			motd = "[PREGAME] Waiting for game to start!";
-			// TODO
+			// Enter the count down sequence
+			g.cdm.waitForSync();
 		}
 	}
 	
@@ -78,7 +83,10 @@ public class GameMachine {
 	}
 	
 	public void kill() {
-		// TODO
+		// Set to crashed state
+		state = -1;
+		// Change the servers list message
+		motd = "[ERROR] Server crashed! Notify admin(s)!";
 	}
 	
 	public String getMOTD() {
