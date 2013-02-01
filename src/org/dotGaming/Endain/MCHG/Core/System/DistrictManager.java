@@ -11,7 +11,6 @@ import org.bukkit.ChatColor;
 import org.dotGaming.Endain.MCHG.Core.Game;
 import org.dotGaming.Endain.MCHG.Core.Manager;
 import org.dotGaming.Endain.MCHG.Core.Player.Tribute;
-import org.dotGaming.Endain.MCHG.Core.System.VoteManager.Announce;
 
 public class DistrictManager implements Manager{
 	private Game g;

@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import org.bukkit.entity.Player;
 import org.dotGaming.Endain.MCHG.Core.Game;
 
-public class PlayerData {
+public class PlayerHistoryData {
 	private Player p;
 	private String name;
 	public Date joined;
@@ -30,7 +30,7 @@ public class PlayerData {
 	public int threatlevel;
 	public InetAddress ip;
 	
-	public PlayerData(Player p) {
+	public PlayerHistoryData(Player p) {
 		this.p = p;
 		this.name = p.getName();
 	}

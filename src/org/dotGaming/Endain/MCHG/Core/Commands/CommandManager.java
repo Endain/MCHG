@@ -2,6 +2,7 @@ package org.dotGaming.Endain.MCHG.Core.Commands;
 
 import java.util.ArrayList;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -66,6 +67,14 @@ public class CommandManager implements CommandExecutor{
 					g.vm.castSkip(t);
 					return true;
 				}
+				return true;
+			} else if(command.getName().equalsIgnoreCase("rules")) {
+				// List off the rules to the player
+				p.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "1. " + ChatColor.RESET + "No hacked/modified clients of any kind!");
+				p.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "2. " + ChatColor.RESET + "No excessive or derogatory language!");
+				p.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "3. " + ChatColor.RESET + "No exploitation of any bugs in the plugin!");
+				p.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "4. " + ChatColor.RESET + "Admins/Mods have the final say in all matters!");
+				p.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "5. " + ChatColor.RESET + "Review the rules posted on the website if you believe you or someone else is breaking the rules.");
 				return true;
 			}
 		}

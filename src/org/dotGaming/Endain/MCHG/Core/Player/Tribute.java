@@ -12,6 +12,7 @@ public class Tribute {
 	public Player p;
 	public Player lastHitBy;
 	public boolean locked;
+	public boolean silenced;
 	private int district;
 	private boolean hasDistrict;
 	private HashMap<String, Integer> damage;
@@ -29,35 +30,41 @@ public class Tribute {
 		this.fatalities = new PlayerFatalitiesData(p);
 	}
 	
+	private void init() {
+		// Set the relevant parameters that every
+		// type of player will need set.
+		p.setHealth(20);
+		p.setSaturation(0);
+		p.setFoodLevel(20);
+	}
+	
 	public void initCitizen() {
-		// TODO
+		// Initialize common parameters
+		init();
 		// Set relevant parameters
 		hasDistrict = false;
 		p.setGameMode(GameMode.SURVIVAL);
-		// TODO We want to give them max fullness, double check this
-		p.setHealth(20);
-		p.setSaturation(0);
-		p.setFoodLevel(20);
 		// Teleport to lobby spawn location
+		// TODO
 	}
 	
 	public void initTribute() {
-		// TODO
+		// Initialize common parameters
+		init();
 		// Set relevant parameters
 		p.setGameMode(GameMode.SURVIVAL);
-		// TODO We want to give them max fullness, double check this
-		p.setHealth(20);
-		p.setSaturation(0);
-		p.setFoodLevel(20);
 		// Teleport to lobby spawn location
+		// TODO
 	}
 	
 	public void initSpectator() {
-		// TODO
+		// Initialize common parameters
+		init();
 		// Set relevant parameters
 		hasDistrict = false;
 		p.setGameMode(GameMode.CREATIVE);
 		// Teleport to current map center
+		// TODO
 	}
 	
 	public void lock() {

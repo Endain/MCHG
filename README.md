@@ -18,4 +18,13 @@ This document will be updated to reflect the practical use of and technical deta
 Current Developers:
 * Endain
 * Strudel
-* XoBar
+
+Pre-Alpha Testers:
+* Endain
+
+Alpha Testers:
+* Endain
+
+Special Thanks:
+* Bukkit Devs
+* Mojang

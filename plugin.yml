@@ -20,3 +20,6 @@ commands:
    skip:
       description: Vote to select a different map list.
       usage: /<command>
+   rules:
+      description: Lists the server rules.
+      usage: /<command>
