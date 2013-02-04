@@ -3,32 +3,22 @@ package org.dotGaming.Endain.MCHG.Core.Player;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import org.bukkit.entity.Player;
 import org.dotGaming.Endain.MCHG.Core.Game;
 
 public class PlayerData {
 	private Player p;
+	private int id;
 	private String name;
-	public Date joined;
-	public Date lastplayed;
-	public int wins;
-	public int highfinish;
-	public int lowfinish;
-	public double averagefinish;
-	public long timeplayed;
-	public long averagelifetime;
-	public int kills;
-	public int gamesplayed;
 	public int rank;
-	public long timestill;
-	public double rawpoints;
-	public int threatlevel;
-	public InetAddress ip;
+	public double points;
+	public int threat;
+	public InetAddress ipv4;
 	
 	public PlayerData(Player p) {
 		this.p = p;
@@ -41,7 +31,7 @@ public class PlayerData {
 		Connection c = g.dm.getDB("MCHG");
 		if(c != null) {
 			PreparedStatement getData;
-		    String query = "SELECT joined, lastplayed, wins, highfinish, lowfinish, averagefinish, timeplayed, averagelifetime, kills, gamesplayed, rank, timestill, rawpoints, threatlevel, INET_NTOA(ip) FROM PlayerData WHERE name=?";
+		    String query = "SELECT id, name, rank, points, threat, INET_NTOA(ipv4) FROM Player WHERE name=?";
 	    	try {
 	    		// Attempt to create the query statement
 				getData = c.prepareStatement(query);
@@ -52,22 +42,13 @@ public class PlayerData {
 				// See if the record existed, read it if it did, otherwise enter it now
 				if(r.next()) { // Entry exists
 					// Extract the results
-					joined = r.getDate(1);
-					lastplayed = r.getDate(2);
-					wins = r.getInt(3);
-					highfinish = r.getInt(4);
-					lowfinish = r.getInt(5);
-					averagefinish = r.getDouble(6);
-					timeplayed = r.getLong(7);
-					averagelifetime = r.getLong(8);
-					kills = r.getInt(9);
-					gamesplayed = r.getInt(10);
-					rank = r.getInt(11);
-					timestill = r.getLong(12);
-					rawpoints = r.getDouble(13);
-					threatlevel = r.getInt(14);
+					id = r.getInt(1);
+					name = r.getString(2);
+					rank = r.getInt(3);
+					points = r.getDouble(4);
+					threat = r.getInt(5);
 					try {
-						ip = InetAddress.getByName(r.getString(15));
+						ipv4 = InetAddress.getByName(r.getString(6));
 					} catch (UnknownHostException e) {
 						e.printStackTrace();
 					}
@@ -75,28 +56,22 @@ public class PlayerData {
 					// Initialize with new player values
 					newData();
 					PreparedStatement putData;
-				    query = "INSERT INTO PlayerData values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,INET_ATON(?))";
+				    query = "INSERT INTO Player (name, rank, points, threat, ipv4) VALUES (?,?,?,?,INET_ATON(?))";
 				    // Attempt to create the query statement
-					putData = c.prepareStatement(query);
+					putData = c.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 					// Set the name to look up
 					putData.setString(1, name);
-					putData.setDate(2, joined);
-					putData.setDate(3, lastplayed);
-					putData.setInt(4, wins);
-					putData.setInt(5, highfinish);
-					putData.setInt(6, lowfinish);
-					putData.setDouble(7, averagefinish);
-					putData.setLong(8, timeplayed);
-					putData.setLong(9, averagelifetime);
-					putData.setInt(10, kills);
-					putData.setInt(11, gamesplayed);
-					putData.setInt(12, rank);
-					putData.setLong(13, timestill);
-					putData.setDouble(14, rawpoints);
-					putData.setInt(15, threatlevel);
-					putData.setString(16, ip.getHostAddress());
+					putData.setInt(2, rank);
+					putData.setDouble(3, points);
+					putData.setInt(4, threat);
+					putData.setString(5, ipv4.getHostAddress());
 					// Execute the query
-					putData.execute();
+					putData.executeUpdate();
+					// Get the id generated
+					ResultSet rs = putData.getGeneratedKeys();
+				    rs.next();
+				    id = rs.getInt(1);
+				    rs.close();
 					// Close statements
 					putData.close();
 				}
@@ -121,26 +96,16 @@ public class PlayerData {
 		Connection c = g.dm.getDB("MCHG");
 		if(c != null) {
 			PreparedStatement saveData;
-		    String query = "UPDATE PlayerData SET joined=?, lastplayed=?, wins=?, highfinish=?, lowfinish=?, averagefinish=?, timeplayed=?, averagelifetime=?, kills=?, gamesplayed=?, rank=?, timestill=?, rawpoints=?, threatlevel=?, INET_NTOA(ip=?) WHERE name=?";
+		    String query = "UPDATE Player SET rank=?, points=?, threat=?, INET_NTOA(ipv4=?) WHERE id=?";
 	    	try {
 	    		// Attempt to create the query statement
 				saveData = c.prepareStatement(query);
 				// Set the data to save
-				saveData.setDate(1, joined);
-				saveData.setDate(2, lastplayed);
-				saveData.setInt(3, wins);
-				saveData.setInt(4, highfinish);
-				saveData.setInt(5, lowfinish);
-				saveData.setDouble(6, averagefinish);
-				saveData.setLong(7, timeplayed);
-				saveData.setLong(8, averagelifetime);
-				saveData.setInt(9, kills);
-				saveData.setInt(10, gamesplayed);
-				saveData.setInt(11, rank);
-				saveData.setLong(12, timestill);
-				saveData.setDouble(13, rawpoints);
-				saveData.setInt(14, threatlevel);
-				saveData.setString(15, name);
+				saveData.setInt(1, rank);
+				saveData.setDouble(2, points);
+				saveData.setInt(3, threat);
+				saveData.setString(4, ipv4.getHostAddress());
+				saveData.setInt(5, id);
 				// Execute the query
 				saveData.execute();
 				// Close statements
@@ -159,20 +124,15 @@ public class PlayerData {
 	
 	private void newData() {
 		// Initialize first time values
-		joined = new Date(System.currentTimeMillis());
-		lastplayed = new Date(System.currentTimeMillis());
-		wins = 0;
-		highfinish = 24;
-		lowfinish = 24;
-		averagefinish = 24;
-		timeplayed = 0;
-		averagelifetime = 0;
-		kills = 0;
-		gamesplayed = 0;
+		name = p.getName();
 		rank = 0;
-		timestill = 0;
-		rawpoints = 0;
-		threatlevel = 0;
-		ip = p.getAddress().getAddress();
+		points = 0;
+		threat = 0;
+		ipv4 = p.getAddress().getAddress();
+	}
+	
+	public int getId() {
+		// Return the player's ID in the database
+		return id;
 	}
 }

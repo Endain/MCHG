@@ -1,19 +1,15 @@
 package org.dotGaming.Endain.MCHG.Core.Player;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.bukkit.entity.Player;
 import org.dotGaming.Endain.MCHG.Core.Game;
 
 public class PlayerHistoryData {
-	private Player p;
-	private String name;
+	private int id;
 	public Date joined;
 	public Date lastplayed;
 	public int wins;
@@ -22,31 +18,25 @@ public class PlayerHistoryData {
 	public double averagefinish;
 	public long timeplayed;
 	public long averagelifetime;
+	public long timestill;
 	public int kills;
 	public int gamesplayed;
-	public int rank;
-	public long timestill;
 	public double rawpoints;
-	public int threatlevel;
-	public InetAddress ip;
 	
-	public PlayerHistoryData(Player p) {
-		this.p = p;
-		this.name = p.getName();
-	}
-	
-	public void load(Game g) {
+	public void load(Game g, int id) {
+		// Save the ID
+		this.id = id;
 		// Load the player data set
 		// Get a database connection to load data from
 		Connection c = g.dm.getDB("MCHG");
 		if(c != null) {
 			PreparedStatement getData;
-		    String query = "SELECT joined, lastplayed, wins, highfinish, lowfinish, averagefinish, timeplayed, averagelifetime, kills, gamesplayed, rank, timestill, rawpoints, threatlevel, INET_NTOA(ip) FROM PlayerData WHERE name=?";
+		    String query = "SELECT joined, lastplayed, wins, highfinish, lowfinish, averagefinish, timeplayed, averagelifetime, timestill, kills, gamesplayed FROM PlayerHistory WHERE id=?";
 	    	try {
 	    		// Attempt to create the query statement
 				getData = c.prepareStatement(query);
 				// Set the name to look up
-				getData.setString(1, name);
+				getData.setInt(1, id);
 				// Execute the query
 				ResultSet r = getData.executeQuery();
 				// See if the record existed, read it if it did, otherwise enter it now
@@ -60,26 +50,18 @@ public class PlayerHistoryData {
 					averagefinish = r.getDouble(6);
 					timeplayed = r.getLong(7);
 					averagelifetime = r.getLong(8);
-					kills = r.getInt(9);
-					gamesplayed = r.getInt(10);
-					rank = r.getInt(11);
-					timestill = r.getLong(12);
-					rawpoints = r.getDouble(13);
-					threatlevel = r.getInt(14);
-					try {
-						ip = InetAddress.getByName(r.getString(15));
-					} catch (UnknownHostException e) {
-						e.printStackTrace();
-					}
+					timestill = r.getLong(9);
+					kills = r.getInt(10);
+					gamesplayed = r.getInt(11);
 				} else {
 					// Initialize with new player values
 					newData();
 					PreparedStatement putData;
-				    query = "INSERT INTO PlayerData values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,INET_ATON(?))";
+				    query = "INSERT INTO PlayerHistory values(?,?,?,?,?,?,?,?,?,?,?,?)";
 				    // Attempt to create the query statement
 					putData = c.prepareStatement(query);
 					// Set the name to look up
-					putData.setString(1, name);
+					putData.setInt(1, id);
 					putData.setDate(2, joined);
 					putData.setDate(3, lastplayed);
 					putData.setInt(4, wins);
@@ -88,13 +70,9 @@ public class PlayerHistoryData {
 					putData.setDouble(7, averagefinish);
 					putData.setLong(8, timeplayed);
 					putData.setLong(9, averagelifetime);
-					putData.setInt(10, kills);
-					putData.setInt(11, gamesplayed);
-					putData.setInt(12, rank);
-					putData.setLong(13, timestill);
-					putData.setDouble(14, rawpoints);
-					putData.setInt(15, threatlevel);
-					putData.setString(16, ip.getHostAddress());
+					putData.setLong(10, timestill);
+					putData.setInt(11, kills);
+					putData.setInt(12, gamesplayed);
 					// Execute the query
 					putData.execute();
 					// Close statements
@@ -121,7 +99,7 @@ public class PlayerHistoryData {
 		Connection c = g.dm.getDB("MCHG");
 		if(c != null) {
 			PreparedStatement saveData;
-		    String query = "UPDATE PlayerData SET joined=?, lastplayed=?, wins=?, highfinish=?, lowfinish=?, averagefinish=?, timeplayed=?, averagelifetime=?, kills=?, gamesplayed=?, rank=?, timestill=?, rawpoints=?, threatlevel=?, INET_NTOA(ip=?) WHERE name=?";
+		    String query = "UPDATE PlayerHistory SET joined=?, lastplayed=?, wins=?, highfinish=?, lowfinish=?, averagefinish=?, timeplayed=?, averagelifetime=?, timestill=?, kills=?, gamesplayed=? WHERE id=?";
 	    	try {
 	    		// Attempt to create the query statement
 				saveData = c.prepareStatement(query);
@@ -134,13 +112,10 @@ public class PlayerHistoryData {
 				saveData.setDouble(6, averagefinish);
 				saveData.setLong(7, timeplayed);
 				saveData.setLong(8, averagelifetime);
-				saveData.setInt(9, kills);
-				saveData.setInt(10, gamesplayed);
-				saveData.setInt(11, rank);
-				saveData.setLong(12, timestill);
-				saveData.setDouble(13, rawpoints);
-				saveData.setInt(14, threatlevel);
-				saveData.setString(15, name);
+				saveData.setLong(9, timestill);
+				saveData.setInt(10, kills);
+				saveData.setInt(11, gamesplayed);
+				saveData.setInt(12, id);
 				// Execute the query
 				saveData.execute();
 				// Close statements
@@ -167,12 +142,8 @@ public class PlayerHistoryData {
 		averagefinish = 24;
 		timeplayed = 0;
 		averagelifetime = 0;
+		timestill = 0;
 		kills = 0;
 		gamesplayed = 0;
-		rank = 0;
-		timestill = 0;
-		rawpoints = 0;
-		threatlevel = 0;
-		ip = p.getAddress().getAddress();
 	}
 }

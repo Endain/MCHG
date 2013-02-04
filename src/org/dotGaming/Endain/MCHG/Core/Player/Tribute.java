@@ -17,6 +17,7 @@ public class Tribute {
 	private boolean hasDistrict;
 	private HashMap<String, Integer> damage;
 	private PlayerData data;
+	private PlayerHistoryData history;
 	private PlayerFatalitiesData fatalities;
 	
 	public Tribute(Player p) {
@@ -27,7 +28,8 @@ public class Tribute {
 		this.hasDistrict = false;
 		this.damage = new HashMap<String, Integer>();
 		this.data = new PlayerData(p);
-		this.fatalities = new PlayerFatalitiesData(p);
+		this.history = new PlayerHistoryData();
+		this.fatalities = new PlayerFatalitiesData();
 	}
 	
 	private void init() {
@@ -113,7 +115,8 @@ public class Tribute {
 		public void run() {
 			// Load the data
 			data.load(g);
-			fatalities.load(g);
+			history.load(g, data.getId());
+			fatalities.load(g, data.getId());
 			// Unlock and notify of sync
 			unlock();
 			if(p != null)

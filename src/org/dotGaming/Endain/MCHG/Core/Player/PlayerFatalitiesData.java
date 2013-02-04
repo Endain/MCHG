@@ -5,11 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.bukkit.entity.Player;
 import org.dotGaming.Endain.MCHG.Core.Game;
 
 public class PlayerFatalitiesData {
-	private String name;
+	private int id;
 	public int player;
 	public int monster;
 	public int explosion;
@@ -19,22 +18,20 @@ public class PlayerFatalitiesData {
 	public int fall;
 	public int other;
 	
-	public PlayerFatalitiesData(Player p) {
-		this.name = p.getName();
-	}
-	
-	public void load(Game g) {
+	public void load(Game g, int id) {
+		// Save the ID
+		this.id = id;
 		// Load the player fatalities data set
 		// Get a database connection to load data from
 		Connection c = g.dm.getDB("MCHG");
 		if(c != null) {
 			PreparedStatement getData;
-		    String query = "SELECT player, monster, explosion, fire, drowning, hunger, fall, other FROM PlayerFatalitiesData WHERE name=?";
+		    String query = "SELECT player, monster, explosion, fire, drowning, hunger, fall, other FROM PlayerFatalities WHERE id=?";
 	    	try {
 	    		// Attempt to create the query statement
 				getData = c.prepareStatement(query);
 				// Set the name to look up
-				getData.setString(1, name);
+				getData.setInt(1, id);
 				// Execute the query
 				ResultSet r = getData.executeQuery();
 				// See if the record existed, read it if it did, otherwise enter it now
@@ -52,11 +49,11 @@ public class PlayerFatalitiesData {
 					// Initialize with new player values
 					newData();
 					PreparedStatement putData;
-				    query = "INSERT INTO PlayerFatalitiesData values(?,?,?,?,?,?,?,?,?)";
+				    query = "INSERT INTO PlayerFatalities values(?,?,?,?,?,?,?,?,?)";
 				    // Attempt to create the query statement
 					putData = c.prepareStatement(query);
 					// Set the name to look up
-					putData.setString(1, name);
+					putData.setInt(1, id);
 					putData.setInt(2, player);
 					putData.setInt(3, monster);
 					putData.setInt(4, explosion);
@@ -91,7 +88,7 @@ public class PlayerFatalitiesData {
 		Connection c = g.dm.getDB("MCHG");
 		if(c != null) {
 			PreparedStatement saveData;
-		    String query = "UPDATE PlayerFatalitiesData SET player=?, monster=?, explosion=?, fire=?, drowning=?, hunger=?, fall=?, other=? WHERE name=?";
+		    String query = "UPDATE PlayerFatalities SET player=?, monster=?, explosion=?, fire=?, drowning=?, hunger=?, fall=?, other=? WHERE id=?";
 	    	try {
 	    		// Attempt to create the query statement
 				saveData = c.prepareStatement(query);
@@ -104,7 +101,7 @@ public class PlayerFatalitiesData {
 				saveData.setInt(6, hunger);
 				saveData.setInt(7, fall);
 				saveData.setInt(8, other);
-				saveData.setString(9, name);
+				saveData.setInt(9, id);
 				// Execute the query
 				saveData.execute();
 				// Close statements
