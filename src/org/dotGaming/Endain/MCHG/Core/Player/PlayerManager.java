@@ -3,9 +3,13 @@ package org.dotGaming.Endain.MCHG.Core.Player;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Random;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.util.Vector;
 import org.dotGaming.Endain.MCHG.Core.Game;
 import org.dotGaming.Endain.MCHG.Core.Manager;
 
@@ -217,5 +221,52 @@ public class PlayerManager implements Manager{
 	public Iterator<Tribute> getTributeIterator() {
 		// Return an iterator over the elements of tributes
 		return tributes.values().iterator();
+	}
+	
+	public void addPotionEffectTributes(PotionEffect pe) {
+		// Add potion effect to all tributes
+		Iterator<Tribute> iter = tributes.values().iterator();
+		while(iter.hasNext())
+			iter.next().p.addPotionEffect(pe);
+	}
+	
+	public void playSoundEffectTributes(Sound s, float volume, float pitch) {
+		// Add potion effect to all tributes
+		Iterator<Tribute> iter = tributes.values().iterator();
+		while(iter.hasNext()) {
+			Player p = iter.next().p;
+			p.playSound(p.getLocation(), s, volume, pitch);
+		}
+	}
+	
+	public void playDistantSoundEffectTributes(Sound s, float volume, float pitch) {
+		// Add potion effect to all tributes
+		Iterator<Tribute> iter = tributes.values().iterator();
+		while(iter.hasNext()) {
+			Player p = iter.next().p;
+			Vector v;
+			Random r = new Random();
+			float f = r.nextFloat();
+			// Choose a random direction
+			if(f <= .25)
+				v = new Vector(10,0,0);
+			else if(f <= .5)
+				v = new Vector(-10,0,0);
+			else if(f <= .75)
+				v = new Vector(0,0,10);
+			else
+				v = new Vector(0,0,-10);
+			p.playSound(p.getLocation().add(v), s, volume, pitch);
+		}
+	}
+	
+	public void signalTributeDeath() {
+		// Signal that a tribute has died
+		Iterator<Tribute> iter = tributes.values().iterator();
+		while(iter.hasNext()) {
+			Player p = iter.next().p;
+			p.playSound(p.getLocation(), Sound.AMBIENCE_THUNDER, 1, 1.5f);
+			p.playSound(p.getLocation(), Sound.EXPLODE, 1, .5f);
+		}
 	}
 }

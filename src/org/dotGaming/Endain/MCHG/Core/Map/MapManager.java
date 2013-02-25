@@ -5,8 +5,24 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Random;
 
+import org.bukkit.ChatColor;
+import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
+import org.bukkit.FireworkEffect.Builder;
+import org.bukkit.FireworkEffect.Type;
+import org.bukkit.Location;
+import org.bukkit.Sound;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Firework;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.meta.FireworkMeta;
+import org.bukkit.scheduler.BukkitTask;
 import org.dotGaming.Endain.MCHG.Core.Game;
 import org.dotGaming.Endain.MCHG.Core.Manager;
 
@@ -15,12 +31,18 @@ public class MapManager implements Manager{
 	private ArrayList<Map> maps;
 	private Map current;
 	private Random rand;
+	private BukkitTask event;
+	private BukkitTask firstRefill;
+	private BukkitTask secondRefill;
 
 	public MapManager(Game g) {
 		this.g = g;
 		this.maps = new ArrayList<Map>();
 		this.current = null;
 		this.rand = new Random();
+		this.event = null;
+		this.firstRefill = null;
+		this.secondRefill = null;
 	}
 	
 	@Override
@@ -119,5 +141,83 @@ public class MapManager implements Manager{
 		if(current != null)
 			return current.getId();
 		return -1;
+	}
+	
+	public void scheduleEvent() {
+		MapEvent me = new MapEvent(g);
+		g.p.getServer().getScheduler().runTaskLater(g.p, me, me.getDelay());
+	}
+	
+	public void cancelEvent() {
+		if(event != null)
+			g.p.getServer().getScheduler().cancelTask(event.getTaskId());
+	}
+	
+	public void scheduleRefills() {
+		firstRefill = g.p.getServer().getScheduler().runTaskLater(g.p, new Refill(), 600);//9600);
+		secondRefill = g.p.getServer().getScheduler().runTaskLater(g.p, new Refill(), 1200);//25200);
+	}
+	
+	public void cancelRefills(boolean first, boolean second) {
+		// Cancel first refill?
+		if(first)
+			if(firstRefill != null)
+				g.p.getServer().getScheduler().cancelTask(firstRefill.getTaskId());
+		// Cancel second refill?
+		if(second)
+			if(secondRefill != null)
+				g.p.getServer().getScheduler().cancelTask(secondRefill.getTaskId());
+	}
+	
+	public void removeNonPlayers() {
+		// Remove any non-player entities by killing them
+		Iterator<LivingEntity> iter = g.w.getEntitiesByClass(LivingEntity.class).iterator();
+		while(iter.hasNext()) {
+			LivingEntity le = iter.next();
+			if(!(le instanceof Player)) {
+				le.damage(le.getMaxHealth());
+			}
+		}
+	}
+	
+	public void launchFirework(Location loc, boolean trail, boolean flicker, Type type, Collection<Color> color, Collection<Color> fade, int power) {
+		// Build the firework effect
+		Builder b = FireworkEffect.builder();
+		if(trail)
+			b.withTrail();
+		if(flicker)
+			b.withFlicker();
+		b.with(type);
+		b.withColor(color);
+		b.withFade(fade);
+		// Create a new firework
+		Firework fw = (Firework)g.w.spawnEntity(loc, EntityType.FIREWORK);
+		// Get and set the metadata
+		FireworkMeta fm = fw.getFireworkMeta();
+		fm.setPower(power);
+		fm.addEffect(b.build());
+		// Apply to our current firework
+		fw.setFireworkMeta(fm);
+	}
+	
+	private class Refill implements Runnable {
+		@Override
+		public void run() {
+			// Refill all chests!
+			g.cm.refill();
+			// Announce the the chests have been refilled
+			g.p.getServer().broadcastMessage(ChatColor.GREEN + "The chests have been refilled!");
+			g.pm.playSoundEffectTributes(Sound.LEVEL_UP, 1f, .75f);
+			Location loc = new Location(g.w, current.getX(), current.getY(), current.getZ());
+			// Firework set colors
+			Collection<Color> color = new LinkedList<Color>();
+			color.add(Color.ORANGE); color.add(Color.YELLOW); color.add(Color.MAROON); color.add(Color.RED);
+			Collection<Color> fade = new LinkedList<Color>();
+			fade.add(Color.WHITE);
+			// Launch fireworks
+			launchFirework(loc, true, false, Type.BURST, color, fade, 1);
+			launchFirework(loc, true, false, Type.BURST, color, fade, 2);
+			launchFirework(loc, true, false, Type.BURST, color, fade, 3);
+		}
 	}
 }

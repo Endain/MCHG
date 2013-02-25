@@ -1,5 +1,6 @@
 package org.dotGaming.Endain.MCHG.Core.System;
 
+import org.dotGaming.Endain.Chronos.Chronos;
 import org.dotGaming.Endain.MCHG.Core.Game;
 
 //Handles tracking and changing between game states.
@@ -68,6 +69,9 @@ public class GameMachine {
 			state = 4;
 			// Change the servers list message
 			motd = "[PREGAME] Waiting for game to start!";
+			// Reset the map time and the time speed
+			Chronos.setTime(1.5);
+			Chronos.setTicks(0);
 			// Enter the count down sequence
 			g.cdm.waitForSync();
 		}
@@ -78,7 +82,9 @@ public class GameMachine {
 			state = 5;
 			// Change the servers list message
 			motd = "[GAME] Server open for spectators!";
-			// TODO
+			// Schedule chest refills
+			g.mm.scheduleRefills();
+			g.mm.scheduleEvent();
 		}
 	}
 	
