@@ -78,6 +78,7 @@ public class Game {
 		p.getCommand("maps").setExecutor(cmd);
 		p.getCommand("v").setExecutor(cmd);
 		p.getCommand("skip").setExecutor(cmd);
+		p.getCommand("d").setExecutor(cmd);
 		
 		// Done initializing, kick off game machine
 		gm.doneInitializing();

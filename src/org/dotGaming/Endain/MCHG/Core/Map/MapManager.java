@@ -25,6 +25,7 @@ import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.scheduler.BukkitTask;
 import org.dotGaming.Endain.MCHG.Core.Game;
 import org.dotGaming.Endain.MCHG.Core.Manager;
+import org.dotGaming.Endain.MCHG.Core.Fireworks.FireworkFactory;
 
 public class MapManager implements Manager{
 	private Game g;
@@ -211,13 +212,17 @@ public class MapManager implements Manager{
 			Location loc = new Location(g.w, current.getX(), current.getY(), current.getZ());
 			// Firework set colors
 			Collection<Color> color = new LinkedList<Color>();
-			color.add(Color.ORANGE); color.add(Color.YELLOW); color.add(Color.MAROON); color.add(Color.RED);
+			color.add(Color.fromBGR(152, 102, 227));
+			//color.add(Color.ORANGE); color.add(Color.YELLOW); color.add(Color.MAROON); color.add(Color.RED);
 			Collection<Color> fade = new LinkedList<Color>();
 			fade.add(Color.WHITE);
 			// Launch fireworks
-			launchFirework(loc, true, false, Type.BURST, color, fade, 1);
-			launchFirework(loc, true, false, Type.BURST, color, fade, 2);
-			launchFirework(loc, true, false, Type.BURST, color, fade, 3);
+			FireworkFactory.launchFirework(loc, FireworkFactory.getCapitolFirework(), 1);
+			FireworkFactory.launchFirework(loc, FireworkFactory.getCapitolFirework(), 2);
+			FireworkFactory.launchFirework(loc, FireworkFactory.getCapitolFirework(), 3);
+			//launchFirework(loc, true, false, Type.BURST, color, fade, 1);
+			//launchFirework(loc, true, false, Type.BURST, color, fade, 2);
+			//launchFirework(loc, true, true, Type.BURST, color, fade, 3);
 		}
 	}
 }

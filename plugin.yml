@@ -23,3 +23,6 @@ commands:
    rules:
       description: Lists the server rules.
       usage: /<command>
+   d:
+      description: Launch a district themed firework.
+      usage: /<command> [district number]

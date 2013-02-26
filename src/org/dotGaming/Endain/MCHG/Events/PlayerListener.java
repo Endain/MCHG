@@ -2,8 +2,11 @@ package org.dotGaming.Endain.MCHG.Events;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Sound;
+import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -12,6 +15,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.ServerListPingEvent;
 import org.dotGaming.Endain.MCHG.Core.Game;
+import org.dotGaming.Endain.MCHG.Core.Fireworks.FireworkFactory;
 import org.dotGaming.Endain.MCHG.Core.Player.Tribute;
 
 //Contains events relating to player actions, excluding combat.
@@ -88,5 +92,20 @@ public class PlayerListener implements Listener {
 	public void onPing(ServerListPingEvent event) {
 		// Give an MOTD based on state
 		event.setMotd(g.gm.getMOTD());
+	}
+	
+	@EventHandler
+	public void onDeath(PlayerDeathEvent event) {
+		// Notify other tributes that a death has occurred
+		Tribute t = g.pm.getTribute(event.getEntity());
+		if(t != null) {
+			// Notify of tribute death
+			g.pm.playSoundEffectTributes(Sound.AMBIENCE_THUNDER, 1f, 1.5f);
+			g.pm.playSoundEffectTributes(Sound.EXPLODE, 1f, .5f);
+			g.p.getServer().broadcastMessage(ChatColor.GOLD + "A tribute from " + ChatColor.BOLD + "" + ChatColor.WHITE + "district " + t.getDistrict() + ChatColor.RESET + "" + ChatColor.GOLD + " has perished!");
+			FireworkFactory.launchFirework(event.getEntity().getLocation(), FireworkFactory.getDistrictFirework(t.getDistrict()), 2);
+			event.setDeathMessage(null);
+			event.setDroppedExp(10);
+		}
 	}
 }

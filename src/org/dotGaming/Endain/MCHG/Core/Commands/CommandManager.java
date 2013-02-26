@@ -8,6 +8,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.dotGaming.Endain.MCHG.Core.Game;
+import org.dotGaming.Endain.MCHG.Core.Fireworks.FireworkFactory;
 import org.dotGaming.Endain.MCHG.Core.Map.Map;
 import org.dotGaming.Endain.MCHG.Core.Player.Tribute;
 
@@ -76,6 +77,12 @@ public class CommandManager implements CommandExecutor{
 				p.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "4. " + ChatColor.RESET + "Admins/Mods have the final say in all matters!");
 				p.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "5. " + ChatColor.RESET + "Review the rules posted on the website if you believe you or someone else is breaking the rules.");
 				return true;
+			} else if(command.getName().equalsIgnoreCase("d")) {
+				// Test district themed firework
+				if(args.length == 1) {
+					FireworkFactory.launchFirework(p.getLastTwoTargetBlocks(null, 30).get(1).getLocation(), FireworkFactory.getDistrictFirework(Integer.parseInt(args[0])), 2);
+					return true;
+				}
 			}
 		}
 		return false;
